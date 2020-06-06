@@ -1,0 +1,20 @@
+ 1. Congress number
+ 2. Roll Call number
+ 3. Month
+ 4. Day
+ 5. Year
+ 6. Number Missing Votes (not voting and not in Congress)
+ 7. Number Yeas
+ 8. Number Nays
+ 9. Number Republican Yeas
+10. Number Republican Nays
+11. Number Democrat Yeas
+12. Number Democrat Nays
+13. Number Northern Republican Yeas
+14. Number Northern Republican Nays
+15. Number Southern Republican Yeas (11 States of Confederacy plus KY and OK)
+16. Number Southern Republican Nays
+17. Number Northern Democrat Yeas
+18. Number Northern Democrat Nays
+19. Number Southern Democrat Yeas (11 States of Confederacy plus KY and OK)
+20. Number Southern Democrat Nays
