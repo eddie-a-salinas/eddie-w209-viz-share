@@ -40,6 +40,79 @@ Year
 */
 
 
+//https://paulund.co.uk/how-to-capitalize-the-first-letter-of-a-string-in-javascript#:~:text=var%20uppercaseFirstLetter%20%3D%20string.,and%20remove%20the%20first%20letter.
+function jsUcfirst(string) 
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+getSeason=function(d,m)
+	{
+	if(m==1 || m==2)
+		{
+		return 'winter';
+		}
+	else if(m==3)
+		{
+		if(d<20)
+			{
+			return 'winter';
+			}
+		else
+			{
+			return 'spring' ;
+			}
+		}
+	else if(m==4 || m==5)
+		{
+		return 'spring';
+		}
+	else if(m==6)
+		{
+		if(d<20)
+			{
+			return 'spring';
+			}
+		else
+			{
+			return 'summer';
+			}
+		}
+	else if(m==7 || m==8)
+		{
+		return 'summer';
+		}
+	else if(m==9)
+		{
+		if(d<22)
+			{
+			return 'summer';
+			}
+		else
+			{
+			return 'fall';
+			}
+		}
+	else if(m==10 || m==11)
+		{
+		return 'fall';
+		}
+	else if(m==12)
+		{
+		if(d<21)
+			{
+			return 'fall';
+			}
+		else
+			{
+			return 'winter';
+			}
+		}
+	alert('error in day to season!');
+	}
+
+
 
 getRecVal=function(rec,key_name)
 	{
