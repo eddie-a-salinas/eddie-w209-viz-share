@@ -1,94 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8" />
-    <title>Headline or title</title>
+    <title>Congress Voting Visualization</title>
 
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-    <div class="chart">
-      <h1>A headline of your insight</h1>
-      <div class="description">
-        A short description of the chart. Usually what's on the y axis.
-      </div>
-      <div id="chart"></div>
-      <div class="chart-footer">
-        By <a href="https://johnguerra.co">John Alexis Guerra Gómez</a>.
-        <br />
-        <strong>Source</strong>: <a href="">My data source</a>
-      </div>
-    </div>
+<div id='dow_div'>
+</div>
 
-    <br />
-    <br />
-
-    <div>
-      A longer description of your insights, your data, how to read the chart,
-      what to take from it etc.
-      <br />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-      perspiciatis deserunt rem officia quis modi at ipsum voluptate libero
-      eveniet officiis quia dolor accusamus, vitae earum neque. Nam, cumque
-      eligendi!. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad,
-      modi a deserunt quia pariatur optio facilis accusantium eveniet expedita
-      vitae sed quos delectus cupiditate maxime consectetur sapiente nesciunt
-      corrupti provident? Lorem ipsum dolor sit amet consectetur adipisicing
-      elit. Impedit cum ad quas ipsum quo, labore eum, quaerat ullam,
-      repellendus accusamus quis aliquam rem atque dolores animi perferendis
-      nemo iusto ducimus. Iste ullam labore consequatur deleniti maiores nihil,
-      culpa dolores rem, facilis quisquam, sed exercitationem porro. Impedit
-      sapiente labore totam, iste dolor eaque nostrum accusamus adipisci
-      consequatur reprehenderit hic eum minus! Mollitia quia odit eligendi!
-      Voluptates asperiores numquam pariatur. Ipsa eligendi nam tenetur, nisi
-      voluptatem vel quibusdam fuga? Voluptatibus dolor, fuga non quod quos
-      optio ratione, eaque eius, debitis natus assumenda.
-    </div>
-
-    <br />
-    <br />
-    <br />
-
-    <h2>Problem Abstraction</h2>
-    <div>
-      Use Tamara Munzner's framework to Abstract your problem (what, why, how)
-    </div>
-
-    <br />
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Problem Abstraction</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>What</td>
-          <td>
-            What type of data do we have? Dataset type (table, networks, etc).
-            Attributes types (Categorical, Ordered) From where?
-          </td>
-        </tr>
-        <tr>
-          <td>Why</td>
-          <td>Visual tasks to perform (action + target)</td>
-        </tr>
-        <tr>
-          <td>How</td>
-          <td>Mark (point, area, line) and channels (x, y, color, etc)</td>
-        </tr>
-        <tr>
-          <td>Example insight 1</td>
-          <td>...</td>
-        </tr>
-        <tr>
-          <td>Example insight 2</td>
-          <td>...</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="./js/utils.js"></script>
     <script src="./js/main.js"></script>
   </body>
 </html>
