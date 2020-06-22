@@ -6,10 +6,7 @@ body {
 .description {
   max-width: 800px;
 }
-table,
-td {
-  border: 0.5px dashed #333;
-}
+
 
 .chart-footer {
   font-style: italic;
