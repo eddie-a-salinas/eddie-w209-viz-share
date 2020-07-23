@@ -1,0 +1,15 @@
+NOTE:
+
+I had to run the following copy commands to put the data in place in order to be able to make the website run.
+All I did before this was just clone the repo and checkout the branch.
+
+esalina@2018comp:~/Documents/UC_Berkeley_MIDS/W209_DataVisualization/git_repos/w209-su2020-cybersec/data$ cp -vi demrep35j_113_clean.csv  /mnt/five_tera/dm/w209-su2020-cybersec/data/
+'demrep35j_113_clean.csv' -> '/mnt/five_tera/dm/w209-su2020-cybersec/data/demrep35j_113_clean.csv'
+esalina@2018comp:~/Documents/UC_Berkeley_MIDS/W209_DataVisualization/git_repos/w209-su2020-cybersec/data$ cp -vi house_vote.csv     /mnt/five_tera/dm/w209-su2020-cybersec/data/
+'house_vote.csv' -> '/mnt/five_tera/dm/w209-su2020-cybersec/data/house_vote.csv'
+esalina@2018comp:~/Documents/UC_Berkeley_MIDS/W209_DataVisualization/git_repos/w209-su2020-cybersec/data$ cp -vi senate_vote.csv    /mnt/five_tera/dm/w209-su2020-cybersec/data/
+'senate_vote.csv' -> '/mnt/five_tera/dm/w209-su2020-cybersec/data/senate_vote.csv'
+esalina@2018comp:~/Documents/UC_Berkeley_MIDS/W209_DataVisualization/git_repos/w209-su2020-cybersec/data$ tree
+esalina@2018comp:~/Documents/UC_Berkeley_MIDS/W209_DataVisualization/git_repos/w209-su2020-cybersec/data$ cp -r memo_party/ /mnt/five_tera/dm/w209-su2020-cybersec/data/
+esalina@2018comp:~/Documents/UC_Berkeley_MIDS/W209_DataVisualization/git_repos/w209-su2020-cybersec/data$ 
+
