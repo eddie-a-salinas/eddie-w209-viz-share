@@ -22,6 +22,7 @@ div {
 	justify-content: center;
 	text-align: center;
 	display: block;
+	place-items: center;
 }
 
 
@@ -34,6 +35,8 @@ table {
 }
 td {
 	justify-content: center;
+	text-align: center;
+	place-items: center;
 	}
 
 h2 {
