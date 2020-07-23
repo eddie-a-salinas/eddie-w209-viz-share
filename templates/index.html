@@ -48,9 +48,14 @@ drilling in on specific votes and the degree to which they reflect the political
 	</thead>
 	<tbody>
 		<tr>
-			<td>Votes per congress</td>	
+			<td>
+			      <h3>Dem-Rep Votes per Congress - Senate</h3>    
+			      <div id="chart1"></div>
+			</td>	
 			<td>INSERT INSTRUCTIONS HERE</td>
-			<td>Roll Cals over the Years</td>
+			<td>
+				<h1># of Roll Calls over the Years and Congress - Senate</h1>   
+				<div id="chart3"></div></td>
 		</tr>
 		<tr>
 			<td>
@@ -66,9 +71,13 @@ drilling in on specific votes and the degree to which they reflect the political
 	</tbody>
 </table>
 
-
+    
     <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="{{ url_for('static', filename='js/chandra_vis.js') }}">
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" >
     <script src="{{ url_for('static', filename='js/utils_test.js') }}">
+    <script>
+		console.log("In html script...");
+    </script>
   </body>
 </html>

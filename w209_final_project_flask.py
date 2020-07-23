@@ -95,3 +95,22 @@ def getPctPartyCache(congress,chamber):
 		abort(404, description="Resource not found")
 
 
+@app.route('/data/<data_file>')
+def returnDataFile(data_file):
+	dpath="data/"+data_file
+	if(os.path.exists(dpath)):
+		return send_file(dpath)
+	else:
+		abort(404, description="Data resource not found")		
+
+@app.route('/images/<path:ipath>')
+def ipathRet(ipath):
+	#print("ipath is "+str(ipath))
+	fpath='static/images/'+ipath
+	if(os.path.exists(fpath)):
+		return send_file(fpath)
+	else:
+		abort(404,description="Image not found!")
+
+
+
