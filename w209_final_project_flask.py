@@ -113,4 +113,8 @@ def ipathRet(ipath):
 		abort(404,description="Image not found!")
 
 
+@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
+def getRollCallDetail(congress,rcnum,chamber):
+    chamber=chamber.lower()
+    return roll_call_df[(roll_call_df['Roll_Call_number']==rcnum) & (roll_call_df['Congress_number']==congress) & (roll_call_df['House']==chamber)].to_json(orient='records')
 

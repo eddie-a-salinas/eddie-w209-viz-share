@@ -59,7 +59,7 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 		<tr>
 			<td>
-				Seating Chart
+				<div id="senate_seatvote_detail_div"></div>
 				<svg id="senate_seating_svg_id" width=480 height=480></svg>
 			</td>
 			<td>
@@ -475,6 +475,29 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 		update_seat_svg("senate_seating_svg_id",text,220,10);
 		//eddie_func();
 		});
+	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
+	var detail_url="/rc_detail/"+cong_num+"/"+rollnum+"/Senate";
+		d3.json(detail_url,function(error,text) {
+				if(error!=null) {
+					$('#senate_seatvote_detail_div').html("<h3>"+error+"</h3>");
+				} else {
+					var detail=text[0];
+					//[ { "Unnamed: 0": 83174, "Congress_number": 113, "Day": 16, "House": "senate", "Month": 12, "Number_Democrat_Nays": 1, "Number_Democrat_Yeas": 51, "Number_Missing_Votes": 15, "Number_Nays": 38, "Number_Northern_Democrat_Nays": 1, "Number_Northern_Democrat_Yeas": 45, "Number_Northern_Republican_Nays": 21, "Number_Northern_Republican_Yeas": 0, "Number_Republican_Nays": 37, "Number_Republican_Yeas": 0, "Number_Southern_Democrat_Nays": 0, "Number_Southern_Democrat_Yeas": 6, "Number_Southern_Republican_Nays": 16, "Number_Southern_Republican_Yeas": 0, "Number_Yeas": 52, "Roll_Call_number": 657, "Year": 2014, "bill_number": "PN1345", "vote_result": "Nomination Confirmed", "vote_desc": "Stephen R. Bough, of Missouri, to be United States District Judge for the Western District of Missouri", "Total_members": 105 } ]
+					console.log("Detail is "+JSON.stringify(detail,null,4));
+					var post_text="Vote name unavailable !";
+					if(detail['vote_desc']!=null && detail['vote_desc'].length>0  )
+						{
+						post_text=detail['vote_desc'];
+						if(detail['vote_result']!=null &&  detail['vote_result'].length>0)
+							{
+							post_text+=" : "+detail['vote_result'];
+							}
+						}
+					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
+				}
+			
+			});
+	//senate_vote_detail_div
 	}
 
 
