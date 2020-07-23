@@ -60,7 +60,7 @@ drilling in on specific votes and the degree to which they reflect the political
 		<tr>
 			<td>
 				<div id="senate_seatvote_detail_div"></div>
-				<svg id="senate_seating_svg_id" width=480 height=480></svg>
+				<svg id="senate_seating_svg_id" width=480 height=480   overflow="visible" ></svg>
 			</td>
 			<td>
 				<table style="display:block;" >
@@ -482,16 +482,18 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					$('#senate_seatvote_detail_div').html("<h3>"+error+"</h3>");
 				} else {
 					var detail=text[0];
-					//[ { "Unnamed: 0": 83174, "Congress_number": 113, "Day": 16, "House": "senate", "Month": 12, "Number_Democrat_Nays": 1, "Number_Democrat_Yeas": 51, "Number_Missing_Votes": 15, "Number_Nays": 38, "Number_Northern_Democrat_Nays": 1, "Number_Northern_Democrat_Yeas": 45, "Number_Northern_Republican_Nays": 21, "Number_Northern_Republican_Yeas": 0, "Number_Republican_Nays": 37, "Number_Republican_Yeas": 0, "Number_Southern_Democrat_Nays": 0, "Number_Southern_Democrat_Yeas": 6, "Number_Southern_Republican_Nays": 16, "Number_Southern_Republican_Yeas": 0, "Number_Yeas": 52, "Roll_Call_number": 657, "Year": 2014, "bill_number": "PN1345", "vote_result": "Nomination Confirmed", "vote_desc": "Stephen R. Bough, of Missouri, to be United States District Judge for the Western District of Missouri", "Total_members": 105 } ]
-					console.log("Detail is "+JSON.stringify(detail,null,4));
+					console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
-					if(detail['vote_desc']!=null && detail['vote_desc'].length>0  )
+					post_det_arr=[detail['vote_description'],detail['vote_question'],detail['vote_detail_description']];
+					post_det_arr=post_det_arr.filter(function(x) {
+										return x!=null;
+										});
+					post_det_arr=post_det_arr.filter(function(x) {
+										return x.length>0
+										});
+					if(post_det_arr.length>0)
 						{
-						post_text=detail['vote_desc'];
-						if(detail['vote_result']!=null &&  detail['vote_result'].length>0)
-							{
-							post_text+=" : "+detail['vote_result'];
-							}
+						post_text=post_det_arr.join("<br>");
 						}
 					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}

@@ -284,7 +284,7 @@ function issueScatterPlotUpdate(svg_id,congress,chamber) {
 						alert(e_msg);
 						return;
 						}
-					console.log("To draw with "+JSON.stringify(pct_data_plot,null,4));
+					//console.log("To draw with "+JSON.stringify(pct_data_plot,null,4));
 
 					svgScatterDraw(pct_data_plot,pk1,pk2,svg_id);
 					}
