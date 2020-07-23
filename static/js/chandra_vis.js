@@ -60,7 +60,7 @@ var y_rep = d3.scaleLinear().range([0, iheight_rep]);
         data.push(temp)  
         }  
   }
-console.log(data);
+//console.log(data);
 
 
 all_congress_numbers = d3.map(data, function(d){return d.Congress_number;}).keys();
@@ -338,7 +338,7 @@ var y_rollcalls = d3.scaleLinear()
         data.push(temp)  
         }  
   }
-console.log(data);
+//console.log(data);
 
 
 all_congress_numbers = d3.map(data, function(d){return d.Congress_number;}).keys();
@@ -351,7 +351,7 @@ for (i = 0; i < all_congress_numbers.length; i++){
                       "Year" : parseInt(1857 + (2 * i) )};        
          congress_years_map.push(temp);
      }
-console.log(congress_years_map);
+//console.log(congress_years_map);
 
 
 var data_rollcalls = []; // GroupBy from https://stackoverflow.com/questions/29364262/how-to-group-by-and-sum-array-of-object

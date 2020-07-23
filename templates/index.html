@@ -60,6 +60,7 @@ drilling in on specific votes and the degree to which they reflect the political
 		<tr>
 			<td>
 				Seating Chart
+				<svg id="senate_seating_svg_id" width=480 height=480></svg>
 			</td>
 			<td>
 				<table>
@@ -86,6 +87,7 @@ drilling in on specific votes and the degree to which they reflect the political
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
+    <script src="{{ url_for('static', filename='js/seat_utils.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/utils_test.js') }}" ></script>
     <script>
 
@@ -349,7 +351,7 @@ var getMMRollCallSelectionDDFromGivenCongress=function(cong_int,chamber)
 			}
 		return false;
 		});
-	console.log("in get MM For cong_int = "+cong_int+" and chamber = "+chamber+", the filterd is "+targetCMM);
+	//console.log("in get MM For cong_int = "+cong_int+" and chamber = "+chamber+", the filterd is "+targetCMM);
 	if(targetCMM.length!=1)
 		{
 		alert("Error in acquiring number roll calls for congress "+cong_int+" in the "+chamber);
@@ -371,7 +373,7 @@ var setupCongressSelections=function()
 	for(var d=0;d<div_ids.length;d++)
 		{
 		var selection_id="congress_"+chamber_names[d]+"_id";
-		var selectionHTML="<select id=\""+selection_id+"\">\n";
+		var selectionHTML="<select    onchange=\"onChangeSenateCongress()\"   id=\""+selection_id+"\">\n";
 		var min_cong=35;
 		var max_cong=113;
 		for(var c=min_cong;c<=max_cong;c++)
@@ -383,7 +385,6 @@ var setupCongressSelections=function()
 		sel_div.html(selectionHTML);
 		
 		}
-
 	}
 
 
@@ -399,12 +400,12 @@ var setupCongressRCSelections=function()
 		var cong_chamb_selection_val=parseInt(""+cong_chamb_selection_val_raw+"");
 		var cong_chamb=chamber_names[0];
 		var cong_cham_mmvals=getMMRollCallSelectionDDFromGivenCongress(cong_chamb_selection_val,cong_chamb);
-		console.log("From cong "+cong_chamb_selection_val+" and chamber "+cong_chamb+" the mm is "+JSON.stringify(cong_cham_mmvals));
+		//console.log("From cong "+cong_chamb_selection_val+" and chamber "+cong_chamb+" the mm is "+JSON.stringify(cong_cham_mmvals));
 		if(cong_cham_mmvals!=null)
 			{
 			var min_rc=cong_cham_mmvals[0];
 			var max_rc=cong_cham_mmvals[1];
-			var selectionHTML="<select id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
+			var selectionHTML="<select onchange=\"onChangeSenateRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
 			for(var rc=min_rc;rc<=max_rc;rc++)
 				{
 				selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
@@ -412,9 +413,73 @@ var setupCongressRCSelections=function()
 			selectionHTML+="</select>\n";
 			var sel_div=$('#'+impose_div_ids[d]);
 			sel_div.html(selectionHTML);
+			
 			}		
 		}
+	}
 
+
+var pullCongressSelectionAndUpdateScatterPlot=function()
+	{
+	console.log("pullCongressSelectionAndUpdateScatterPlot called");
+	}
+
+
+
+var onChangeSenateCongress=function()
+	{
+	//new congress is selected, update the roll-call list because they change per congress
+	console.log("onChangeSenateCongress called");
+	setupCongressRCSelections();
+	pullCongressSelectionAndUpdateScatterPlot();
+	onChangeSenateRC();
+	}
+
+var onChangeSenateRC=function()
+	{
+	console.log("onChangeSenateRC called");
+	pullSenateSelectionsAndUpdateSeating();
+	}
+
+var pullSenateSelections=function()
+	{
+	sel_ids=["congress_senate_id","congress_rc_senate_id"];
+	var sel_vals=[];
+	for(var v=0;v<sel_ids.length;v++)
+		{
+		var sel_elem=$('#'+sel_ids[v]);
+		var sel_val=sel_elem.val();
+		sel_vals.push(parseInt(""+sel_val+""));
+		}
+	var selectedCongress=sel_vals[0];
+	var selectedRC=sel_vals[1];
+	//console.log("Selected congress is "+selectedCongress+" and selected rollcall is "+selectedRC+"");
+	return [selectedCongress,selectedRC];
+	}
+
+var imposeSenateSeatingChart=function(cong_num,rollnum) {
+	console.log("in imposeSenateSeatingChart");
+	console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
+	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/senate"
+	console.log("url is "+url);
+	//d3.json(url[, callback])
+	d3.json(url,function(error, text) {
+		console.log("Error is "+error);
+		//console.log("text is "+JSON.stringify(text));
+		$('#senate_seating_svg_id').html("");
+		update_seat_svg("senate_seating_svg_id",text,220,10);
+		//eddie_func();
+		});
+	}
+
+
+var pullSenateSelectionsAndUpdateSeating=function()
+	{
+	console.log("pullSenateSelectionsAndUpdateSeating called");
+	var senate_selections=pullSenateSelections();
+	imposeSenateSeatingChart(parseInt(senate_selections[0]),parseInt(senate_selections[1]));
+
+	
 	}
 
 
@@ -423,6 +488,8 @@ var setupCongressRCSelections=function()
 		console.log("In html script...");
 		setupCongressSelections();
 		setupCongressRCSelections();
+		onChangeSenateCongress();
+
     </script>
   </body>
 </html>
