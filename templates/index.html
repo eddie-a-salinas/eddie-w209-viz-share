@@ -78,6 +78,7 @@ drilling in on specific votes and the degree to which they reflect the political
 			</td>
 			<td>
 				scatter plot
+				<svg id="scatter_plot_senate" width=800 height=800  overflow="visible"></svg>
 			</td>
 		</tr>
 	</tbody>
@@ -87,7 +88,8 @@ drilling in on specific votes and the degree to which they reflect the political
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
-    <script src="{{ url_for('static', filename='js/seat_utils.js')  }}" ></script>
+    <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
+    <script src="{{ url_for('static', filename='js/scatter_plot.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/utils_test.js') }}" ></script>
     <script>
 
@@ -422,6 +424,9 @@ var setupCongressRCSelections=function()
 var pullCongressSelectionAndUpdateScatterPlot=function()
 	{
 	console.log("pullCongressSelectionAndUpdateScatterPlot called");
+	var sen_cong_sel=pullSenateSelections();
+	var cong=sen_cong_sel[0];
+	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate");
 	}
 
 
