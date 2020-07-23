@@ -130,7 +130,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 					disp_Text+=" : "+d['ddesc'];
 					}			
 				console.log('disp_text is '+disp_Text);
-				var bbox=hoverText.text(disp_Text).node().getBBox();
+				var bbox=hoverText.text(disp_Text).nodes()[0].getBBox();
 				hoverGroup.selectAll('rect').attr('width',bbox.width+10);
 				})
 			.on("mouseout",function(d,i) {
@@ -188,7 +188,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 
 
 	if(isFirstTime)
-		{
+		{		
 		firstTimeObj[ftidx]=false;
 		hoverGroup=svg_obj.append("g")
 			.attr("class","poli_part_hg")
@@ -286,7 +286,7 @@ function issueScatterPlotUpdate(svg_id,congress,chamber) {
 						}
 					console.log("To draw with "+JSON.stringify(pct_data_plot,null,4));
 
-					svgScatterDraw(pct_data,pk1,pk2,svg_id);
+					svgScatterDraw(pct_data_plot,pk1,pk2,svg_id);
 					}
 				else
 					{
