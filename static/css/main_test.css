@@ -1,0 +1,15 @@
+body {
+  margin: 30px;
+  font-family: sans-serif;
+}
+
+.description {
+  max-width: 800px;
+}
+
+
+.chart-footer {
+  font-style: italic;
+  font-size: 10pt;
+  color: #aaa;
+}
