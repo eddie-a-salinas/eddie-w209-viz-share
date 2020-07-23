@@ -44,3 +44,11 @@ h2 {
 	justify-content: center;
 	
 	}
+
+
+/* Style the lines by removing the fill and applying a stroke */
+.line {
+    fill: none;
+    stroke: #ff9999;
+    stroke-width: 3;
+}
