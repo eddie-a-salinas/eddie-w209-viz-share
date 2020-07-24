@@ -38,7 +38,9 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 		//do gridlines
 		line_attr={"stroke":"black",
 			"stroke-dasharray":20};
-		var line_step=0.2;
+		var line_step=0.25;
+		var x_ticks=[];
+		var y_ticks=[];
 		for(var gx=0.0;gx<=1.0;gx+=line_step)
 			{
 			//console.log('ap line gx='+gx);
@@ -49,8 +51,9 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 				.attr("x2",xScale(gx))
 				.attr("y1",yScale(0.0))
 				.attr("y2",yScale(1.0));
+			x_ticks.push(gx);
 			}
-		for(var gy=0;gy<=1.0;gy+=line_step)
+		for(var gy=0.0;gy<=1.0;gy+=line_step)
 			{
 			//console.log('ap line yx='+gy);
 			main_g.append("line")
@@ -60,16 +63,22 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 				.attr("y2",yScale(gy))
 				.attr("x1",xScale(0.0))
 				.attr("x2",xScale(1.0));
+			y_ticks.push(gy);
 			}
 				
 		//do axes
+		//var x_ticks=8;
+		//var y_ticks=8;
+		console.log("x/y ticks : "+JSON.stringify(x_ticks)+"/"+JSON.stringify(y_ticks));
 		var x_axis_tx="translate(0,"+(height-margin.top-margin.bottom)+")";
 		var yAxis = d3.axisLeft(yScale)
-			.ticks(20);
+			.tickFormat(d3.format(",.2f"))
+			.tickValues(y_ticks);
 		main_g.append("g")
 			.call(yAxis);	
 		var xAxis=d3.axisBottom(xScale)
-			.ticks(20);
+			.tickFormat(d3.format(",.2f"))
+			.tickValues(x_ticks);
 		main_g.append("g")
 			.attr("transform",x_axis_tx)
 			.call(xAxis);
@@ -82,7 +91,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 			.append("text")
 			.text("% Republicans Voting Yay");
 		main_g.append("g")
-			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(0.63)+")")
+			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(0.70)+")")
 			.append("g")
 			.attr("transform","rotate(90)")
 			.append("text")
