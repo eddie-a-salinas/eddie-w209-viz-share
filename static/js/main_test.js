@@ -39,7 +39,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		voters.push({'name':vname,'party':vparty,'vote':d[v]['cast_code']});
 		}
 	//console.log("Voters are "+JSON.stringify(voters));
-	var desk_width=10;
+	var desk_width=20;
 	var seat_info=make_seat_info(desk_width,voters.length);
 	var voters_assigned_seats=assign_seats(seat_info,voters);
 

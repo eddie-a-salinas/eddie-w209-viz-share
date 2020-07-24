@@ -118,7 +118,6 @@ def ipathRet(ipath):
 def getRollCallDetail(congress,rcnum,chamber):
     c_int=int(congress)
     f_base="data/memo_party/pp."+chamber.capitalize()+"."+str(c_int).zfill(3)+".json"
-    f_base="data/memo_party/pp."+chamber+"."+str(c_int).zfill(3)+".json"
     if(os.path.exists(f_base)):
         #print("f_base is "+str(f_base))
         #return send_file(f_base)

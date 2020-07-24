@@ -59,8 +59,8 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 		<tr>
 			<td>
-				<div id="senate_seatvote_detail_div"></div>
-				<svg id="senate_seating_svg_id" width=480 height=480   overflow="visible" ></svg>
+				<!--scatter plot-->
+				<svg id="scatter_plot_senate" width=800 height=800  overflow="visible"></svg>
 			</td>
 			<td>
 				<table style="display:block;" >
@@ -77,8 +77,10 @@ drilling in on specific votes and the degree to which they reflect the political
 				</table>
 			</td>
 			<td>
-				scatter plot
-				<svg id="scatter_plot_senate" width=800 height=800  overflow="visible"></svg>
+
+				<!-- seating chart -->
+				<div id="senate_seatvote_detail_div"></div>
+				<svg id="senate_seating_svg_id" width=960 height=960   overflow="visible" ></svg>
 			</td>
 		</tr>
 	</tbody>
@@ -472,7 +474,7 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 		console.log("Error is "+error);
 		//console.log("text is "+JSON.stringify(text));
 		$('#senate_seating_svg_id').html("");
-		update_seat_svg("senate_seating_svg_id",text,220,10);
+		update_seat_svg("senate_seating_svg_id",text,480,10);
 		//eddie_func();
 		});
 	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
