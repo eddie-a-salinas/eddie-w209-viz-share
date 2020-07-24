@@ -1,4 +1,5 @@
 from flask import Flask, render_template,send_file, abort
+import json
 import pandas as pd
 import numpy as np
 import os
@@ -94,4 +95,39 @@ def getPctPartyCache(congress,chamber):
 	else:
 		abort(404, description="Resource not found")
 
+
+@app.route('/data/<data_file>')
+def returnDataFile(data_file):
+	dpath="data/"+data_file
+	if(os.path.exists(dpath)):
+		return send_file(dpath)
+	else:
+		abort(404, description="Data resource not found")		
+
+@app.route('/images/<path:ipath>')
+def ipathRet(ipath):
+	#print("ipath is "+str(ipath))
+	fpath='static/images/'+ipath
+	if(os.path.exists(fpath)):
+		return send_file(fpath)
+	else:
+		abort(404,description="Image not found!")
+
+
+@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
+def getRollCallDetail(congress,rcnum,chamber):
+    c_int=int(congress)
+    f_base="data/memo_party/pp."+chamber.capitalize()+"."+str(c_int).zfill(3)+".json"
+    if(os.path.exists(f_base)):
+        #print("f_base is "+str(f_base))
+        #return send_file(f_base)
+        with open(f_base,'r') as reader:
+            ddict=json.load(reader)
+            rcdata=ddict['roll_calldata']
+            desired_rcdata=[rcd for rcd in rcdata if int(rcd["rollcall"])==rcnum ]
+            return json.dumps(desired_rcdata)
+    else:
+        abort(404, description="Resource not found")    
+    #chamber=chamber.lower()
+    #return roll_call_df[(roll_call_df['Roll_Call_number']==rcnum) & (roll_call_df['Congress_number']==congress) & (roll_call_df['House']==chamber)].to_json(orient='records')
 

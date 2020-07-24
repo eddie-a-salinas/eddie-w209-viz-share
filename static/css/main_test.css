@@ -1,0 +1,54 @@
+
+
+
+
+body {
+  margin: 30px;
+  font-family: sans-serif;
+}
+
+.description {
+  max-width: 800px;
+}
+
+
+.chart-footer {
+  font-style: italic;
+  font-size: 10pt;
+  color: #aaa;
+}
+
+div {
+	justify-content: center;
+	text-align: center;
+	display: block;
+	place-items: center;
+}
+
+
+table {
+	width: 100%;
+	height: 100%;
+	/*border: 3px red double;*/
+	justify-content: center;
+	/*width: 100%;height: 100%;*/
+}
+td {
+	justify-content: center;
+	text-align: center;
+	place-items: center;
+	}
+
+h2 {
+	text-align: center;	
+	justify-content: center;
+	
+	}
+
+
+/* Style the lines by removing the fill and applying a stroke */
+.line {
+    fill: none;
+    stroke: #ff9999;
+    stroke-width: 3;
+}
