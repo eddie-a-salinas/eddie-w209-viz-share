@@ -84,8 +84,9 @@ drilling in on specific votes and the degree to which they reflect the political
 			<td>
 
 				<!-- seating chart -->
-				<div id="senate_seatvote_detail_div"></div>
-				<svg id="senate_seating_svg_id" width=960 height=960   overflow="visible" ></svg>
+				<div id="senate_seatvote_detail_div" style="height:10em;"   ></div>
+				<svg id="senate_seating_svg_id" width=960 height=460   overflow="visible" ></svg>
+				
 			</td>
 		</tr>
 	</tbody>
@@ -483,6 +484,31 @@ var pullSenateSelections=function()
 	return [selectedCongress,selectedRC];
 	}
 
+var ordinalNum=function(d)
+	{
+	d=""+d+"";
+	ew_obj={
+		"1":"st",
+		"2":"nd",
+		"3":"rd"
+		}
+	for(const [key, value] of Object.entries(ew_obj))
+		{
+		if(d.endsWith(key)) {
+			return d+value;
+			}
+		}
+	if(d=="0")
+		{
+		return d;
+		}
+	else
+		{
+		return d+"th";
+		}
+	}
+
+
 var imposeSenateSeatingChart=function(cong_num,rollnum) {
 	console.log("in imposeSenateSeatingChart");
 	console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
@@ -505,7 +531,7 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					var detail=text[0];
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
-					post_det_arr=[detail['vote_description'],detail['vote_question'],detail['vote_detail_description']];
+					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
 					post_det_arr=post_det_arr.filter(function(x) {
 										return x!=null;
 										});
@@ -516,6 +542,7 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 						{
 						post_text=post_det_arr.join("<br>");
 						}
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+"<br></h3>"+post_text;
 					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}
 			
