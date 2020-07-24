@@ -484,7 +484,7 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					$('#senate_seatvote_detail_div').html("<h3>"+error+"</h3>");
 				} else {
 					var detail=text[0];
-					console.log("DETAIL is "+JSON.stringify(detail,null,4));
+					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_description'],detail['vote_question'],detail['vote_detail_description']];
 					post_det_arr=post_det_arr.filter(function(x) {

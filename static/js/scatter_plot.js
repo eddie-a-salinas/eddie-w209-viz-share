@@ -23,10 +23,11 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 		.range([0,width-margin.right-margin.left]);
 
 
-	console.log('ft is '+isFirstTime);
+
 	var main_g=null;
 	var hoverGroup=null;
 	var isFirstTime=firstTimeObj[ftidx];
+	console.log('ft is '+isFirstTime);
 	if(isFirstTime)
 		{
 
@@ -129,7 +130,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 					{
 					disp_Text+=" : "+d['ddesc'];
 					}			
-				console.log('disp_text is '+disp_Text);
+				//console.log('disp_text is '+disp_Text);
 				var bbox=hoverText.text(disp_Text).nodes()[0].getBBox();
 				hoverGroup.selectAll('rect').attr('width',bbox.width+10);
 				})
@@ -285,7 +286,9 @@ function issueScatterPlotUpdate(svg_id,congress,chamber) {
 						return;
 						}
 					//console.log("To draw with "+JSON.stringify(pct_data_plot,null,4));
-
+					pk1=allowed_keys[0];
+					pk2=allowed_keys[1];
+					//console.log("PK1 as "+pk1+" AND PK2 as "+pk2);
 					svgScatterDraw(pct_data_plot,pk1,pk2,svg_id);
 					}
 				else
