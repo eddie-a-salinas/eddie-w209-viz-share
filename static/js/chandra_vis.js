@@ -301,19 +301,19 @@ var marks = gDrawing.selectAll("path.pt").data(data_rollcalls);
 
 var hoverImageBox = gDrawing.append("g").style("visibility","hidden")
 
- hoverImageBox.append("rect")
+/* hoverImageBox.append("rect")
               .attr("x",650)
               .attr("y",20)
               .attr("width",280)
               .attr("height",200)
               .attr("fill","white")
-              .attr("stroke", "5px");
+              .attr("stroke", "5px");*/
 
  var hoverImage =  hoverImageBox.append("image")                               
-                                .attr("x", 275)
-                                .attr("y", 10)
-                                .attr("width", 175)
-                                .attr("height", 100);   
+                                .attr("x", 300)
+                                .attr("y", 10);
+                                /*.attr("width", 175)
+                                .attr("height", 100);   */
 
  var hoverGroup = gDrawing.append("g").style("visibility","hidden");
 
