@@ -1,4 +1,8 @@
 
+var get_party_colors=function(){
+	var party_colors={'Republican':'red','Democrat':'blue','Independent':'green'};
+	return party_colors;
+	}
 
 
 //https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
@@ -20,6 +24,75 @@ var cast_code_lookup ={
 	7:"Present (some Congresses)",
 	8:"Present (some Congresses)",
 	9:"Not Voting (Abstention)",
+	}
+
+
+var cast_code_to_color=function(cc,party_colors_map,party) {
+	/*console.log("cast_code_to_color called");
+	console.log("cast_code_to_color with cc="+cc);
+	console.log("cast_code_to_color called with map as : "+JSON.stringify(party_colors_map));
+	console.log("cast_code_to_color called with party  as : "+party);*/
+	if(cc==1)
+		{
+		//yay
+		var cc1ret="purple";
+		if(party in party_colors_map)
+			{
+			cc1ret=party_colors_map[party];
+			}
+		else
+			{
+			cc1ret="purple";
+			}
+		//console.log("Returning party color : "+cc1ret);
+		return cc1ret;
+		}
+	else if(cc==6)
+		{
+		//nay
+		return 'white';
+		}
+	else if(cc==9)
+		{
+		//absent!
+		return 'grey';
+		}
+	else
+		{
+		return 'yellow';
+		}
+	}
+
+
+var installSeatLegend=function(div_id,svg_dim)
+	{
+	console.log("start installSeatLegend");
+	var parties=["Democrat"];
+	var castCodes=[1,6,9,-1];
+	var castDescs=["Yay","Nay","Absent","Other (e.g. 'present' or 'announced')"];
+	var table_html="<table><thead></thead>";
+	for(var c=0;c<castCodes.length;c++)
+		{
+		table_html+="<tr>";
+		table_html+="<td>"+castDescs[c]+"</td>";
+
+		for(var p=0;p<parties.length;p++)
+			{
+			var svg_fill_color=cast_code_to_color(castCodes[c],get_party_colors(),parties[p]);
+			if(c==0) { svg_fill_color="black"; }
+			console.log("Svg rect fill color is "+svg_fill_color);
+			table_html+="<td>";
+				table_html+="<svg width="+svg_dim+" height="+svg_dim+">";
+				table_html+="<rect x=0 y=0  width="+svg_dim+" height="+svg_dim+" style=\"stroke:black; fill:"+svg_fill_color+"; \" ></rect>";
+				table_html+="</svg>";
+			table_html+="</td>";
+			}
+		//table_html+="<td>Republican "+castDescs[c]+"</td>";
+		table_html+="</tr>";		
+		}
+	table_html+="</table>";
+	$('#'+div_id).html(table_html);
+	console.log("finish installSeatLegend");		
 	}
 
 
@@ -415,7 +488,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		{
 		var vname=d[v]['bioname']+" of "+d[v]['state_abbrev'];
 		var vparty=d[v]['party_name'];
-		if(vparty=="Democrat")
+		/*if(vparty=="Democrat")
 			{
 			vparty="Democrat";
 			}
@@ -425,8 +498,8 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 			}
 		else
 			{
-			vparty="Other";
-			}
+			vparty=d[v]
+			}*/
 		voters.push({'name':vname,'party':vparty,'vote':d[v]['cast_code']});
 		}
 	//console.log("Voters are "+JSON.stringify(voters));
@@ -468,7 +541,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 					return  seat_info['data'][d['seat_id']]['transform']
 					});
 
-		var party_colors={'Republican':'red','Democrat':'blue','Independent':'green'};
+		var party_colors=get_party_colors();
 
 
 		the_gs.append('rect')
@@ -490,26 +563,8 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 					//console.log('party is '+d['party']);
 					//console.log('pc : '+JSON.stringify(party_colors));
 					var the_vote=parseInt(d['vote']);
-					//1=yay ; 6=nay ; else=blank
-					if(the_vote==1)
-						{
-						//yay
-						return party_colors[d['party']];						
-						}
-					else if(the_vote==6)
-						{
-						//nay
-						return 'white';
-						}
-					else if(the_vote==9)
-						{
-						//absent!
-						return 'grey';
-						}
-					else
-						{
-						return 'yellow';
-						}
+					var color=cast_code_to_color(the_vote,party_colors,d['party']);
+					return color;
 					})
 			.on("mouseenter",function(d,i) {
 					var the_voters_party=d['party'];

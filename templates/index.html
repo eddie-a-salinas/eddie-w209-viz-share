@@ -86,7 +86,13 @@ drilling in on specific votes and the degree to which they reflect the political
 
 				<!-- seating chart -->
 				<div id="senate_seatvote_detail_div" style="height:10em;"   ></div>
-				<svg id="senate_seating_svg_id" width=960 height=460   overflow="visible" ></svg>
+				<table>
+					<tr>
+					<td><svg id="senate_seating_svg_id" width=960 height=460   overflow="visible" ></svg></td>
+					<td><div style="text-align: left; float: left;" id="senate_seat_legend_div">BLAH</div></td>
+					</tr>
+				</table>		
+				
 				
 			</td>
 		</tr>
@@ -449,7 +455,7 @@ var pullCongressSelectionAndUpdateScatterPlot=function()
 			alert("Error in trying to set roll-call value!");
 			}		
 		}
-	var title_text="Partisanship Percentages among the Rollcalls of the "+ordinalNum(cong)+" Congress";
+	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
 	$('#scatter_plot_senate_header_div').html('<h3>'+title_text+'</h3>');
 	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate",rc_callback);
 	}
@@ -571,7 +577,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 		setupCongressSelections();
 		setupCongressRCSelections();
 		onChangeSenateCongress();
-
+	installSeatLegend("senate_seat_legend_div",50);
     </script>
   </body>
 </html>

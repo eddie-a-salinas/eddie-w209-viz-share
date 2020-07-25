@@ -79,9 +79,11 @@ def getTotalRollcallsPerCongress(chamber):
 def getMemberVote(congress,rollcall,chamber):
 	if str(chamber).lower() == 'house':
 
-		memberVoteDF = all_votes_house_df[(all_votes_house_df['congress']==congress) & (all_votes_house_df['rollnumber']==rollcall)]
+		memberVoteDF = all_votes_house_df[(all_votes_house_df['congress']==congress) & (all_votes_house_df['rollnumber']==rollcall)    ]
 	else:
-		memberVoteDF = all_votes_senate_df[(all_votes_senate_df['congress']==congress) & (all_votes_senate_df['rollnumber']==rollcall)]
+		memberVoteDF = all_votes_senate_df[(all_votes_senate_df['congress']==congress) & (all_votes_senate_df['rollnumber']==rollcall) ]
+	#avoid records where pres or vice-pres is a congressperson!
+	memberVoteDF=memberVoteDF[~(memberVoteDF['bioname'].isnull())]
 
 	return memberVoteDF.to_json(orient='records')
 
