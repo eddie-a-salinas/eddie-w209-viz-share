@@ -113,7 +113,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .attr("height", function (d) { return y_dem(0) - y_dem(d.Dem_Votes); } )
     .attr("width",   x_congress.bandwidth() )
     .style("fill", "blue") //.style("fill", "teal") //#69b3a2
-    .style("opacity", 0.65)
+    //.style("opacity", 0.65)
     .on("mouseover", function() {        
       d3.select(this)
         .style("fill", "teal");
@@ -144,7 +144,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .attr("height", function (d) { return y_dem(0) - y_dem(d.Rep_Votes); } )
     .attr("width",   x_congress.bandwidth() )
     .style("fill", "Red") //.style("fill", "teal") //#69b3a2
-    .style("opacity", 0.65)
+    //.style("opacity", 0.65)
     .on("mouseover", function() {        
       d3.select(this)
         .style("fill", "teal");
