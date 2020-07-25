@@ -65,6 +65,7 @@ drilling in on specific votes and the degree to which they reflect the political
 		<tr>
 			<td>
 				<!--scatter plot-->
+				<div id="scatter_plot_senate_header_div"></div>
 				<svg id="scatter_plot_senate" width=500 height=500  overflow="visible"></svg>
 			</td>
 			<td>
@@ -448,6 +449,8 @@ var pullCongressSelectionAndUpdateScatterPlot=function()
 			alert("Error in trying to set roll-call value!");
 			}		
 		}
+	var title_text="Partisanship Percentages among the Rollcalls of the "+ordinalNum(cong)+" Congress";
+	$('#scatter_plot_senate_header_div').html('<h3>'+title_text+'</h3>');
 	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate",rc_callback);
 	}
 
