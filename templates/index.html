@@ -538,11 +538,12 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					post_det_arr=post_det_arr.filter(function(x) {
 										return x.length>0
 										});
+					post_det_arr=post_det_arr.filter(function(x) { console.log("legnth of "+x+" is "+x.length);     if(x.length<=1000) { return true; } else { return false;}});
 					if(post_det_arr.length>0)
 						{
 						post_text=post_det_arr.join("<br>");
 						}
-					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+"<br></h3>"+post_text;
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br></h3>"+post_text;
 					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}
 			
