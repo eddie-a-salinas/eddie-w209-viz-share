@@ -85,7 +85,7 @@ drilling in on specific votes and the degree to which they reflect the political
 			<td>
 
 				<!-- seating chart -->
-				<div id="senate_seatvote_detail_div" style="height:10em;"   ></div>
+				<div id="senate_seatvote_detail_div" style="height:12em;" width="750"  ></div>
 				<table>
 					<tr>
 					<td><svg id="senate_seating_svg_id" width=400 height=460   overflow="visible" ></svg></td>
@@ -519,10 +519,10 @@ var ordinalNum=function(d)
 
 
 var imposeSenateSeatingChart=function(cong_num,rollnum) {
-	console.log("in imposeSenateSeatingChart");
-	console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
+	//console.log("in imposeSenateSeatingChart");
+	//console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
 	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/senate"
-	console.log("url is "+url);
+	//console.log("url is "+url);
 	//d3.json(url[, callback])
 	d3.json(url,function(error, text) {
 		console.log("Error is "+error);
@@ -547,7 +547,7 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					post_det_arr=post_det_arr.filter(function(x) {
 										return x.length>0
 										});
-					post_det_arr=post_det_arr.filter(function(x) { console.log("legnth of "+x+" is "+x.length);     if(x.length<=1000) { return true; } else { return false;}});
+					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=1000) { return true; } else { return false;}});
 					if(post_det_arr.length>0)
 						{
 						post_text=post_det_arr.join("<br>");

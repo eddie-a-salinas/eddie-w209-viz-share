@@ -96,6 +96,33 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 			.attr("transform","rotate(90)")
 			.append("text")
 			.text("% Democrats Voting Yay");
+
+		//bi-partisan "DMZ"
+		//<polygon points="0,100 50,25 50,75 100,0" />
+		var step=0.25;
+		var poly_x=[0 , 0    , 1.0-step , 1.0 , 1.0      , step ];
+		var poly_y=[0 , step , 1.0      , 1.0 , 1.0-step , 0.0  ];
+		var poly_points=[];
+		for(var p=0;p<poly_x.length;p++)
+			{
+			poly_points.push(""+xScale(poly_x[p])+","+yScale(poly_y[p]));
+			}
+		var poly_points_str=poly_points.join(" ");
+		console.log("pps is "+poly_points_str);
+		main_g.append("polygon")
+			.attr("points",poly_points_str)
+			.attr("fill","purple")
+			.style("opacity",0.75);
+		var dmz_text="Bi-Partisan Zone";
+		main_g.append("text")
+			.attr("x",xScale(1-step-0.02))
+			.attr("y",yScale(1.0+0.01))
+			.text(dmz_text);
+		main_g.append("g")
+			.attr("transform","translate("+xScale(1.0+0.01)+","+yScale(1.0)+") rotate(90)")
+			.append("text")
+			.text(dmz_text);
+
 		}
 	else
 		{
@@ -176,7 +203,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 				var red_val=Math.ceil(255.0*d['Republican']);
 				var blue_val=Math.ceil(255.0*d['Democrat']);
 				//https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
-				var red_hex=red_val.toString(16);
+				/*var red_hex=red_val.toString(16);
 				if(red_hex.length==1)
 					{
 					red_hex="0"+red_hex;
@@ -187,7 +214,19 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 					blue_hex="0"+blue_hex;
 					}
 				var green_hex="00";
-				var ret_col="#"+red_hex+green_hex+blue_hex;
+				var ret_col="#"+red_hex+green_hex+blue_hex;*/
+				if(d['Republican']>d['Democrat'])
+					{
+					return "red";
+					}
+				else if(d['Democrat']>d['Republican'])
+					{
+					return "blue";
+					}
+				else
+					{
+					return 'purple';
+					}
 				return ret_col;
 				})
 			.attr("note",function(d,i) {
