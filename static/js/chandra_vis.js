@@ -311,9 +311,9 @@ var hoverImageBox = gDrawing.append("g").style("visibility","hidden")
 
  var hoverImage =  hoverImageBox.append("image")                               
                                 .attr("x", 300)
-                                .attr("y", 10);
-                                /*.attr("width", 175)
-                                .attr("height", 100);   */
+                                .attr("y", 10)
+                                .attr("width", 175)
+                                .attr("height", 100);   
 
  var hoverGroup = gDrawing.append("g").style("visibility","hidden");
 
