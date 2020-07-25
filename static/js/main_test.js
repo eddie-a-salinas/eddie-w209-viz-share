@@ -3,7 +3,7 @@ console.log("in main_test.js ");
 
 var getDeskWidth=function()
 	{
-	var desk_width=20;
+	var desk_width=14;
 	return desk_width;
 	}
 

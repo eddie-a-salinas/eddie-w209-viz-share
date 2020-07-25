@@ -74,7 +74,14 @@ var installSeatLegend=function(div_id,svg_dim)
 	for(var c=0;c<castCodes.length;c++)
 		{
 		table_html+="<tr>";
-		table_html+="<td>"+castDescs[c]+"</td>";
+		if(castCodes[c]!=1)
+			{
+			table_html+="<td>"+castDescs[c]+"</td>";
+			}
+		else
+			{
+			table_html+="<td>"+castDescs[c]+" (Party Color)</td>";
+			}
 
 		for(var p=0;p<parties.length;p++)
 			{
