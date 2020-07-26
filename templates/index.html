@@ -55,7 +55,7 @@ drilling in on specific votes and the degree to which they reflect the political
 				<div id="chart3"></div></td>
 
 			</td>	
-			<td>INSERT INSTRUCTIONS HERE</td>
+			<td></td>
 			<td>
 
 			      <!-- butterfly chart -->
@@ -117,7 +117,7 @@ drilling in on specific votes and the degree to which they reflect the political
 				<div id="chart4"></div></td>
 
 			</td>	
-			<td>INSERT INSTRUCTIONS HERE</td>
+			<td></td>
 			<td>
 
 			      <!-- butterfly chart -->
@@ -293,7 +293,7 @@ var pullHouseSelections=function()
 var imposeHouseSeatingChart=function(cong_num,rollnum) {
 	//console.log("in imposeHouseSeatingChart");
 	//console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
-	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/house"
+	var url="getMemberVote/"+cong_num+"/"+rollnum+"/house"
 	//console.log("url is "+url);
 	//d3.json(url[, callback])
 	d3.json(url,function(error, text) {
@@ -304,7 +304,7 @@ var imposeHouseSeatingChart=function(cong_num,rollnum) {
 		//eddie_func();
 		});
 	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
-	var detail_url="/rc_detail/"+cong_num+"/"+rollnum+"/House";
+	var detail_url="rc_detail/"+cong_num+"/"+rollnum+"/House";
 		d3.json(detail_url,function(error,text) {
 				if(error!=null) {
 					$('#house_seatvote_detail_div').html("<h3>"+error+"</h3>");
@@ -483,7 +483,7 @@ var pullSenateSelections=function()
 var imposeSenateSeatingChart=function(cong_num,rollnum) {
 	//console.log("in imposeSenateSeatingChart");
 	//console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
-	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/senate"
+	var url="getMemberVote/"+cong_num+"/"+rollnum+"/senate"
 	//console.log("url is "+url);
 	//d3.json(url[, callback])
 	d3.json(url,function(error, text) {
@@ -494,7 +494,7 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 		//eddie_func();
 		});
 	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
-	var detail_url="/rc_detail/"+cong_num+"/"+rollnum+"/Senate";
+	var detail_url="rc_detail/"+cong_num+"/"+rollnum+"/Senate";
 		d3.json(detail_url,function(error,text) {
 				if(error!=null) {
 					$('#senate_seatvote_detail_div').html("<h3>"+error+"</h3>");
