@@ -460,6 +460,13 @@ var pullCongressSelectionAndUpdateScatterPlot=function()
 	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate",rc_callback);
 	}
 
+var functionSenateTimeButterCallback=function(cong_num)
+	{
+	//console.log("functionSenateTimeButterCallback called with cong_num="+cong_num);
+	var cong_sen_sel_elem=$("#congress_senate_id");
+	cong_sen_sel_elem.val(cong_num);
+	onChangeSenateCongress();
+	}
 
 
 var onChangeSenateCongress=function()

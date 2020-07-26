@@ -1,7 +1,7 @@
 
 
 d3.json("getVotesPerCongress/senate", function (err, data) {
-  create_butterfly_chart(data, "senate", "#chart1") 
+  create_butterfly_chart(data, "senate", "#chart1",functionSenateTimeButterCallback) 
 });
 
 /*d3.json("getVotesPerCongress/house", function (err, data) {
@@ -11,7 +11,7 @@ d3.json("getVotesPerCongress/senate", function (err, data) {
 
 
 d3.json("getTotalRollcallsPerCongress/senate", function (err, data) {  
-  create_timeline_plot(data, "senate", "#chart3");
+  create_timeline_plot(data, "senate", "#chart3",functionSenateTimeButterCallback);
 });
 
 
@@ -20,7 +20,7 @@ d3.json("getTotalRollcallsPerCongress/senate", function (err, data) {
 });*/
 
 
-function create_butterfly_chart(myData, chamber, chart_number) {
+function create_butterfly_chart(myData, chamber, chart_number,functionSenateTimeButterCallback) {
   
 
 var width = 750,
@@ -118,6 +118,12 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
       d3.select(this)
         .style("fill", "teal");
          })
+    .on("click",function(d,i) {
+		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
+		var cong_num=d["Congress_number"];
+		functionSenateTimeButterCallback(cong_num);
+		
+		})
     .on("mouseout", function() {
            d3.select(this)
               .transition()
@@ -145,6 +151,11 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .attr("width",   x_congress.bandwidth() )
     .style("fill", "Red") //.style("fill", "teal") //#69b3a2
     //.style("opacity", 0.65)
+    .on("click",function(d,i) {
+		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
+		var cong_num=d["Congress_number"];
+		functionSenateTimeButterCallback(cong_num);
+		})
     .on("mouseover", function() {        
       d3.select(this)
         .style("fill", "teal");
@@ -283,6 +294,11 @@ var marks = gDrawing.selectAll("path.pt").data(data_rollcalls);
                 hoverGroup.style("visibility","visible"); 
                 hoverText1.text(imageData[congress_years_map[i].Year][1]);
          })
+	.on("click",function(d,i) {
+		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
+		var cong_num=d["Congress_number"];
+		functionSenateTimeButterCallback(cong_num);
+		})
         .on("mouseout", function(d, i) {
            d3.select(this)
               .transition()

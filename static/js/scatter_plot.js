@@ -100,8 +100,9 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 		//bi-partisan "DMZ"
 		//<polygon points="0,100 50,25 50,75 100,0" />
 		var step=0.25;
-		var poly_x=[0 , 0    , 1.0-step , 1.0 , 1.0      , step ];
-		var poly_y=[0 , step , 1.0      , 1.0 , 1.0-step , 0.0  ];
+		var t_bl_step=0.0;
+		var poly_x=[0+t_bl_step , 0+t_bl_step    , 1.0-step , 1.0 , 1.0      , step+t_bl_step ];
+		var poly_y=[0+t_bl_step , step+t_bl_step , 1.0      , 1.0 , 1.0-step , 0.0+t_bl_step  ];
 		var poly_points=[];
 		for(var p=0;p<poly_x.length;p++)
 			{
