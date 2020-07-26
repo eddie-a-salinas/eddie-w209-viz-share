@@ -209,7 +209,7 @@ var setupHouseCongressRCSelections=function()
 			{
 			var min_rc=cong_cham_mmvals[0];
 			var max_rc=cong_cham_mmvals[1];
-			var selectionHTML="<select onchange=\"onChangeHouseRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
+			var selectionHTML="<select  style=\"width: 50px\"   onchange=\"onChangeHouseRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
 			for(var rc=min_rc;rc<=max_rc;rc++)
 				{
 				selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
@@ -399,7 +399,7 @@ var setupSenateCongressRCSelections=function()
 			{
 			var min_rc=cong_cham_mmvals[0];
 			var max_rc=cong_cham_mmvals[1];
-			var selectionHTML="<select onchange=\"onChangeSenateRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
+			var selectionHTML="<select  style=\"width: 50px\"   onchange=\"onChangeSenateRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
 			for(var rc=min_rc;rc<=max_rc;rc++)
 				{
 				selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
