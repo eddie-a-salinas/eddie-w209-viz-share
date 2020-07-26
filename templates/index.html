@@ -110,7 +110,7 @@ drilling in on specific votes and the degree to which they reflect the political
 
 
 
-var setupCongressSelections=function()
+var setupSenateCongressSelections=function()
 	{
 	var div_ids=["cong_sen_sel_dd_div"];
 	var chamber_names=["senate"];
@@ -132,7 +132,7 @@ var setupCongressSelections=function()
 	}
 
 
-var setupCongressRCSelections=function()
+var setupSenateCongressRCSelections=function()
 	{
 	var sel_ids=["congress_senate_id"];
 	var chamber_names=["senate"];
@@ -163,7 +163,7 @@ var setupCongressRCSelections=function()
 	}
 
 
-var pullCongressSelectionAndUpdateScatterPlot=function()
+var pullCongressSenateSelectionAndUpdateScatterPlot=function()
 	{
 	console.log("pullCongressSelectionAndUpdateScatterPlot called");
 	var sen_cong_sel=pullSenateSelections();
@@ -200,8 +200,8 @@ var onChangeSenateCongress=function()
 	{
 	//new congress is selected, update the roll-call list because they change per congress
 	console.log("onChangeSenateCongress called");
-	setupCongressRCSelections();
-	pullCongressSelectionAndUpdateScatterPlot();
+	setupSenateCongressRCSelections();
+	pullCongressSenateSelectionAndUpdateScatterPlot();
 	onChangeSenateRC();
 	}
 
@@ -227,29 +227,7 @@ var pullSenateSelections=function()
 	return [selectedCongress,selectedRC];
 	}
 
-var ordinalNum=function(d)
-	{
-	d=""+d+"";
-	ew_obj={
-		"1":"st",
-		"2":"nd",
-		"3":"rd"
-		}
-	for(const [key, value] of Object.entries(ew_obj))
-		{
-		if(d.endsWith(key)) {
-			return d+value;
-			}
-		}
-	if(d=="0")
-		{
-		return d;
-		}
-	else
-		{
-		return d+"th";
-		}
-	}
+
 
 
 var imposeSenateSeatingChart=function(cong_num,rollnum) {
@@ -308,8 +286,8 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
 
 		console.log("In html script...");
-		setupCongressSelections();
-		setupCongressRCSelections();
+		setupSenateCongressSelections();
+		setupSenateCongressRCSelections();
 		onChangeSenateCongress();
 	installSeatLegend("senate_seat_legend_div",50);
     </script>

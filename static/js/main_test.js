@@ -251,6 +251,31 @@ const cong_min_max_rollnums=[
 	];
 
 
+var ordinalNum=function(d)
+	{
+	d=""+d+"";
+	ew_obj={
+		"1":"st",
+		"2":"nd",
+		"3":"rd"
+		}
+	for(const [key, value] of Object.entries(ew_obj))
+		{
+		if(d.endsWith(key)) {
+			return d+value;
+			}
+		}
+	if(d=="0")
+		{
+		return d;
+		}
+	else
+		{
+		return d+"th";
+		}
+	}
+
+
 var getMMRollCallSelectionDDFromGivenCongress=function(cong_int,chamber)
 	{
 	var fchamber="";
