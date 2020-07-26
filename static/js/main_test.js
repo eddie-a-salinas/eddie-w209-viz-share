@@ -285,7 +285,7 @@ var getMMRollCallSelectionDDFromGivenCongress=function(cong_int,chamber)
 		}
 	else
 		{
-		fchamber=="House";
+		fchamber="House";
 		}
 	var targetCMM=cong_min_max_rollnums.filter(function(d)
 		{
@@ -297,7 +297,7 @@ var getMMRollCallSelectionDDFromGivenCongress=function(cong_int,chamber)
 			}
 		return false;
 		});
-	//console.log("in get MM For cong_int = "+cong_int+" and chamber = "+chamber+", the filterd is "+targetCMM);
+	//console.log("in get MM For cong_int = "+cong_int+" and chamber = "+chamber+", the filtered is "+targetCMM);
 	if(targetCMM.length!=1)
 		{
 		alert("Error in acquiring number roll calls for congress "+cong_int+" in the "+chamber);
