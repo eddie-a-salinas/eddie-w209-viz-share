@@ -4,9 +4,9 @@ d3.json("getVotesPerCongress/senate", function (err, data) {
   create_butterfly_chart(data, "senate", "#chart1",functionSenateTimeButterCallback) 
 });
 
-/*d3.json("getVotesPerCongress/house", function (err, data) {
-  create_butterfly_chart(data, "house", "#chart2") 
-});*/
+d3.json("getVotesPerCongress/house", function (err, data) {
+  create_butterfly_chart(data, "house", "#chart2",functionHouseTimeButterCallback) 
+});
 
 
 
@@ -15,12 +15,12 @@ d3.json("getTotalRollcallsPerCongress/senate", function (err, data) {
 });
 
 
-/*d3.json("getTotalRollcallsPerCongress/house", function (err, data) {  
-  create_timeline_plot(data, "house", "#chart4")
-});*/
+d3.json("getTotalRollcallsPerCongress/house", function (err, data) {  
+  create_timeline_plot(data, "house", "#chart4",functionHouseTimeButterCallback)
+});
 
 
-function create_butterfly_chart(myData, chamber, chart_number,functionSenateTimeButterCallback) {
+function create_butterfly_chart(myData, chamber, chart_number,functionTimeButterCallback) {
   
 
 var width = 750,
@@ -59,8 +59,8 @@ var y_rep = d3.scaleLinear().range([0, iheight_rep]);
         data.push(temp)  
    }  
  
-console.log("Latest data from API")  
-console.log(data);
+//console.log("Latest data from API")  
+//console.log(data);
 
 
 
@@ -121,7 +121,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .on("click",function(d,i) {
 		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
 		var cong_num=d["Congress_number"];
-		functionSenateTimeButterCallback(cong_num);
+		functionTimeButterCallback(cong_num);
 		
 		})
     .on("mouseout", function() {
@@ -154,7 +154,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .on("click",function(d,i) {
 		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
 		var cong_num=d["Congress_number"];
-		functionSenateTimeButterCallback(cong_num);
+		functionTimeButterCallback(cong_num);
 		})
     .on("mouseover", function() {        
       d3.select(this)
@@ -176,7 +176,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
 }
 
 
-function create_timeline_plot(myData, chamber, chart_number) {
+function create_timeline_plot(myData, chamber, chart_number,functionTimeButterCallback) {
  
 
 var width = 750,
@@ -212,8 +212,8 @@ var y_rollcalls = d3.scaleLinear()
         data.push(temp)  
          
   }
-console.log("This data is for rollcalls by API")  
-console.log(data);
+//console.log("This data is for rollcalls by API")  
+//console.log(data);
 
 
 
@@ -227,7 +227,7 @@ for (i = 0; i < all_congress_numbers.length; i++){
                       "Year" : parseInt(1857 + (2 * i) )};        
          congress_years_map.push(temp);
      }
-console.log(congress_years_map);
+//console.log(congress_years_map);
 
 
 var data_rollcalls = data 
@@ -297,7 +297,7 @@ var marks = gDrawing.selectAll("path.pt").data(data_rollcalls);
 	.on("click",function(d,i) {
 		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
 		var cong_num=d["Congress_number"];
-		functionSenateTimeButterCallback(cong_num);
+		functionTimeButterCallback(cong_num);
 		})
         .on("mouseout", function(d, i) {
            d3.select(this)

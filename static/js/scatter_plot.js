@@ -1,7 +1,8 @@
 
 
 var firstTimeObj={
-		"scatter_plot_senate":true
+		"scatter_plot_senate":true,
+		"scatter_plot_house":true
 	};
 
 var anim_time=1000;

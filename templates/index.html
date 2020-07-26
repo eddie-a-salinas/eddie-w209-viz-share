@@ -98,14 +98,264 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 	</tbody>
 </table>
+<!------------HOUSE---------------->
+<hr>	
+<table>
+	<thead>
+		<tr>
+			<td colspan=3>
+				<h1>House Dashboard</h1>
+			</td>
+		<td>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
 
-    
+				<!-- timeline -->
+				<h3># of Roll Calls over the Years and Congress - House</h3>   
+				<div id="chart4"></div></td>
+
+			</td>	
+			<td>INSERT INSTRUCTIONS HERE</td>
+			<td>
+
+			      <!-- butterfly chart -->
+			      <h3>Dem-Rep Votes per Congress - House</h3>    
+			      <div id="chart2"></div>
+		</tr>
+		<tr>
+			<td>
+				<!--scatter plot-->
+				<div id="scatter_plot_house_header_div"></div>
+				<svg id="scatter_plot_house" width=500 height=500  overflow="visible"></svg>
+			</td>
+			<td>
+				<table style="display:block;" >
+					<thead>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Congress</td><td><div id="cong_house_sel_dd_div">drop-down</div></td>
+						<tr/>
+						<tr>
+							<td>Roll Call</td><td><div id="rollcall_house_sel_dd_div">drop-down</div></td>
+						</tr>						
+					</tbody>
+				</table>
+			</td>
+			<td>
+
+				<!-- seating chart -->
+				<div id="house_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<table>
+					<tr>
+					<td><svg id="house_seating_svg_id" width=750 height=660   overflow="visible" ></svg></td>
+					<td><div style="text-align: left; float: left;" id="house_seat_legend_div">BLAH</div></td>
+					</tr>
+				</table>		
+				
+				
+			</td>
+		</tr>
+	</tbody>
+</table>
     <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
     <script src="{{ url_for('static', filename='js/scatter_plot.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/utils_test.js') }}" ></script>
+    <script>
+
+
+
+var setupHouseCongressSelections=function()
+	{
+	var div_ids=["cong_house_sel_dd_div"];
+	var chamber_names=["house"];
+	for(var d=0;d<div_ids.length;d++)
+		{
+		var selection_id="congress_"+chamber_names[d]+"_id";
+		var selectionHTML="<select    onchange=\"onChangeHouseCongress()\"   id=\""+selection_id+"\">\n";
+		var min_cong=35;
+		var max_cong=113;
+		for(var c=min_cong;c<=max_cong;c++)
+			{
+			selectionHTML+="<option value=\""+c+"\">"+c+"</option>\n";
+			}
+		selectionHTML+="</select>\n";
+		var sel_div=$('#'+div_ids[d]);
+		sel_div.html(selectionHTML);
+		
+		}
+	}
+
+
+var setupHouseCongressRCSelections=function()
+	{
+	var sel_ids=["congress_house_id"];
+	var chamber_names=["house"];
+	var impose_div_ids=["rollcall_house_sel_dd_div"];
+	for(var d=0;d<sel_ids.length;d++)
+		{
+		var cong_chamb_selection_val_raw=$('#'+sel_ids[d]).val();
+		console.log("Raw value is "+cong_chamb_selection_val_raw);
+		var cong_chamb_selection_val=parseInt(""+cong_chamb_selection_val_raw+"");
+		var cong_chamb=chamber_names[0];
+		//console.log("To call getMMRollCallSelectionDDFromGivenCongress with sel val of "+cong_chamb_selection_val+" and chamber ="+cong_chamb);
+		var cong_cham_mmvals=getMMRollCallSelectionDDFromGivenCongress(cong_chamb_selection_val,cong_chamb);
+		//console.log("From cong "+cong_chamb_selection_val+" and chamber "+cong_chamb+" the mm is "+JSON.stringify(cong_cham_mmvals));
+		if(cong_cham_mmvals!=null)
+			{
+			var min_rc=cong_cham_mmvals[0];
+			var max_rc=cong_cham_mmvals[1];
+			var selectionHTML="<select onchange=\"onChangeHouseRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
+			for(var rc=min_rc;rc<=max_rc;rc++)
+				{
+				selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
+				}
+			selectionHTML+="</select>\n";
+			var sel_div=$('#'+impose_div_ids[d]);
+			sel_div.html(selectionHTML);
+			
+			}		
+		}
+	}
+
+
+var pullCongressHouseSelectionAndUpdateScatterPlot=function()
+	{
+	console.log("pullCongressHouseSelectionAndUpdateScatterPlot called");
+	var sen_cong_sel=pullHouseSelections();
+	var cong=sen_cong_sel[0];
+	var rc_callback=function(roll_call_num)
+		{
+		//console.log("RC_callback called with roll_call_num = "+roll_call_num);
+		var rc_selection_elem=$('#congress_rc_house_id');
+		if(rc_selection_elem!=null)
+			{
+			rc_selection_elem.val(roll_call_num);
+			onChangeHouseRC();
+			}
+		else
+			{
+			alert("Error in trying to set house roll-call value!");
+			}		
+		}
+	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
+	$('#scatter_plot_house_header_div').html('<h3>'+title_text+'</h3>');
+	issueScatterPlotUpdate("scatter_plot_house",cong,"House",rc_callback);
+	}
+
+var functionHouseTimeButterCallback=function(cong_num)
+	{
+	console.log("functionHouseTimeButterCallback called with cong_num="+cong_num);
+	var cong_house_sel_elem=$("#congress_house_id");
+	cong_house_sel_elem.val(cong_num);
+	onChangeHouseCongress();
+	}
+
+
+var onChangeHouseCongress=function()
+	{
+	//new congress is selected, update the roll-call list because they change per congress
+	console.log("onChangeHouseCongress called");
+	setupHouseCongressRCSelections();
+	pullCongressHouseSelectionAndUpdateScatterPlot();
+	onChangeHouseRC();
+	}
+
+var onChangeHouseRC=function()
+	{
+	console.log("onChangeHouseRC called");
+	pullHouseSelectionsAndUpdateSeating();
+	}
+
+var pullHouseSelections=function()
+	{
+	sel_ids=["congress_house_id","congress_rc_house_id"];
+	var sel_vals=[];
+	for(var v=0;v<sel_ids.length;v++)
+		{
+		var sel_elem=$('#'+sel_ids[v]);
+		var sel_val=sel_elem.val();
+		sel_vals.push(parseInt(""+sel_val+""));
+		}
+	var selectedCongress=sel_vals[0];
+	var selectedRC=sel_vals[1];
+	//console.log("Selected congress is "+selectedCongress+" and selected rollcall is "+selectedRC+"");
+	return [selectedCongress,selectedRC];
+	}
+
+
+
+
+var imposeHouseSeatingChart=function(cong_num,rollnum) {
+	//console.log("in imposeHouseSeatingChart");
+	//console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
+	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/house"
+	//console.log("url is "+url);
+	//d3.json(url[, callback])
+	d3.json(url,function(error, text) {
+		console.log("Error is "+error);
+		//console.log("text is "+JSON.stringify(text));
+		$('#house_seating_svg_id').html("");
+		update_seat_svg("house_seating_svg_id",text,250,10);
+		//eddie_func();
+		});
+	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
+	var detail_url="/rc_detail/"+cong_num+"/"+rollnum+"/House";
+		d3.json(detail_url,function(error,text) {
+				if(error!=null) {
+					$('#house_seatvote_detail_div').html("<h3>"+error+"</h3>");
+				} else {
+					var detail=text[0];
+					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
+					var post_text="Vote name unavailable !";
+					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
+					post_det_arr=post_det_arr.filter(function(x) {
+										return x!=null;
+										});
+					post_det_arr=post_det_arr.filter(function(x) {
+										return x.length>0
+										});
+					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
+					if(post_det_arr.length>0)
+						{
+						post_text=post_det_arr.join("<br>");
+						}
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br></h3>"+post_text;
+					$('#house_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
+				}
+			
+			});
+	//house_vote_detail_div
+	}
+
+
+var pullHouseSelectionsAndUpdateSeating=function()
+	{
+	console.log("pullHouseSelectionsAndUpdateSeating called");
+	var house_selections=pullHouseSelections();
+	imposeHouseSeatingChart(parseInt(house_selections[0]),parseInt(house_selections[1]));
+
+	
+	}
+
+
+
+
+		console.log("In html script...");
+		setupHouseCongressSelections();
+		setupHouseCongressRCSelections();
+		onChangeHouseCongress();
+	installSeatLegend("house_seat_legend_div",50);
+    </script>
+
+
+    
+
+
     <script>
 
 
@@ -291,5 +541,6 @@ var pullSenateSelectionsAndUpdateSeating=function()
 		onChangeSenateCongress();
 	installSeatLegend("senate_seat_legend_div",50);
     </script>
+    <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
   </body>
 </html>
