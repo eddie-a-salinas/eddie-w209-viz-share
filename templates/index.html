@@ -42,25 +42,31 @@ drilling in on specific votes and the degree to which they reflect the political
 	<thead>
 		<tr>
 			<td colspan=3>
-				<h2>Senate Dashboard</h2>
+				<h1>Senate Dashboard</h1>
 			</td>
 		<td>
 	</thead>
 	<tbody>
 		<tr>
 			<td>
-			      <h3>Dem-Rep Votes per Congress - Senate</h3>    
-			      <div id="chart1"></div>
+
+				<!-- timeline -->
+				<h3># of Roll Calls over the Years and Congress - Senate</h3>   
+				<div id="chart3"></div></td>
+
 			</td>	
 			<td>INSERT INSTRUCTIONS HERE</td>
 			<td>
-				<h1># of Roll Calls over the Years and Congress - Senate</h1>   
-				<div id="chart3"></div></td>
+
+			      <!-- butterfly chart -->
+			      <h3>Dem-Rep Votes per Congress - Senate</h3>    
+			      <div id="chart1"></div>
 		</tr>
 		<tr>
 			<td>
 				<!--scatter plot-->
-				<svg id="scatter_plot_senate" width=800 height=800  overflow="visible"></svg>
+				<div id="scatter_plot_senate_header_div"></div>
+				<svg id="scatter_plot_senate" width=500 height=500  overflow="visible"></svg>
 			</td>
 			<td>
 				<table style="display:block;" >
@@ -79,16 +85,82 @@ drilling in on specific votes and the degree to which they reflect the political
 			<td>
 
 				<!-- seating chart -->
-				<div id="senate_seatvote_detail_div"></div>
-				<svg id="senate_seating_svg_id" width=960 height=960   overflow="visible" ></svg>
+				<div id="senate_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<table>
+					<tr>
+					<td><svg id="senate_seating_svg_id" width=400 height=460   overflow="visible" ></svg></td>
+					<td><div style="text-align: left; float: left;" id="senate_seat_legend_div">BLAH</div></td>
+					</tr>
+				</table>		
+				
+				
 			</td>
 		</tr>
 	</tbody>
 </table>
+<!------------HOUSE---------------->
+<hr>	
+<table>
+	<thead>
+		<tr>
+			<td colspan=3>
+				<h1>House Dashboard</h1>
+			</td>
+		<td>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
 
-    
+				<!-- timeline -->
+				<h3># of Roll Calls over the Years and Congress - House</h3>   
+				<div id="chart4"></div></td>
+
+			</td>	
+			<td>INSERT INSTRUCTIONS HERE</td>
+			<td>
+
+			      <!-- butterfly chart -->
+			      <h3>Dem-Rep Votes per Congress - House</h3>    
+			      <div id="chart2"></div>
+		</tr>
+		<tr>
+			<td>
+				<!--scatter plot-->
+				<div id="scatter_plot_house_header_div"></div>
+				<svg id="scatter_plot_house" width=500 height=500  overflow="visible"></svg>
+			</td>
+			<td>
+				<table style="display:block;" >
+					<thead>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Congress</td><td><div id="cong_house_sel_dd_div">drop-down</div></td>
+						<tr/>
+						<tr>
+							<td>Roll Call</td><td><div id="rollcall_house_sel_dd_div">drop-down</div></td>
+						</tr>						
+					</tbody>
+				</table>
+			</td>
+			<td>
+
+				<!-- seating chart -->
+				<div id="house_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<table>
+					<tr>
+					<td><svg id="house_seating_svg_id" width=750 height=660   overflow="visible" ></svg></td>
+					<td><div style="text-align: left; float: left;" id="house_seat_legend_div">BLAH</div></td>
+					</tr>
+				</table>		
+				
+				
+			</td>
+		</tr>
+	</tbody>
+</table>
     <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
     <script src="{{ url_for('static', filename='js/scatter_plot.js')  }}" ></script>
@@ -96,281 +168,199 @@ drilling in on specific votes and the degree to which they reflect the political
     <script>
 
 
-///bin/echo "SELECT congress,chamber,MIN(CAST(rollnumber AS INT)) AS MIN_ROLL,MAX(CAST(rollnumber AS INT)) AS MAX_ROLL FROM rollcalls GROUP BY congress,chamber ORDER BY CAST(congress AS INT) ASC;" |sqlite3 ../data/cong_data.db  | tr "|" ","|sed -r "s/,/\",\"/g"| awk '{print "[\"" $0 "\"]," }'|grep -Pv 'MIN_ROLL'
 
-const cong_min_max_rollnums=[
-	["1","House","1","109"],
-	["1","Senate","1","100"],
-	["2","House","1","102"],
-	["2","Senate","1","52"],
-	["3","House","1","69"],
-	["3","Senate","1","79"],
-	["4","House","1","83"],
-	["4","Senate","1","86"],
-	["5","House","1","155"],
-	["5","Senate","1","202"],
-	["6","House","1","96"],
-	["6","Senate","1","120"],
-	["7","House","1","142"],
-	["7","Senate","1","88"],
-	["8","House","1","132"],
-	["8","Senate","1","150"],
-	["9","House","1","158"],
-	["9","Senate","1","88"],
-	["10","House","1","237"],
-	["10","Senate","1","91"],
-	["11","House","1","293"],
-	["11","Senate","1","167"],
-	["12","House","1","314"],
-	["12","Senate","1","204"],
-	["13","House","1","352"],
-	["13","Senate","1","263"],
-	["14","House","1","113"],
-	["14","Senate","1","189"],
-	["15","House","1","106"],
-	["15","Senate","1","132"],
-	["16","House","1","147"],
-	["16","Senate","1","120"],
-	["17","House","1","95"],
-	["17","Senate","1","91"],
-	["18","House","1","94"],
-	["18","Senate","1","178"],
-	["19","House","1","111"],
-	["19","Senate","1","234"],
-	["20","House","1","233"],
-	["20","Senate","1","238"],
-	["21","House","1","273"],
-	["21","Senate","1","277"],
-	["22","House","1","462"],
-	["22","Senate","1","422"],
-	["23","House","1","327"],
-	["23","Senate","1","229"],
-	["24","House","1","459"],
-	["24","Senate","1","439"],
-	["25","House","1","475"],
-	["25","Senate","1","410"],
-	["26","House","1","751"],
-	["26","Senate","1","334"],
-	["27","House","1","974"],
-	["27","Senate","1","822"],
-	["28","House","1","597"],
-	["28","Senate","1","305"],
-	["29","House","1","642"],
-	["29","Senate","1","383"],
-	["30","House","1","478"],
-	["30","Senate","1","344"],
-	["31","House","1","572"],
-	["31","Senate","1","499"],
-	["32","House","1","455"],
-	["32","Senate","1","358"],
-	["33","House","1","607"],
-	["33","Senate","1","546"],
-	["34","House","1","729"],
-	["34","Senate","1","449"],
-	["35","House","1","548"],
-	["35","Senate","1","702"],
-	["36","House","1","433"],
-	["36","Senate","1","607"],
-	["37","House","1","638"],
-	["37","Senate","1","801"],
-	["38","House","1","600"],
-	["38","Senate","1","598"],
-	["39","House","1","613"],
-	["39","Senate","1","501"],
-	["40","House","1","717"],
-	["40","Senate","1","716"],
-	["41","House","1","634"],
-	["41","Senate","1","742"],
-	["42","House","1","517"],
-	["42","Senate","1","803"],
-	["43","House","1","475"],
-	["43","Senate","1","420"],
-	["44","House","1","328"],
-	["44","Senate","1","434"],
-	["45","House","1","377"],
-	["45","Senate","1","585"],
-	["46","House","1","439"],
-	["46","Senate","1","570"],
-	["47","House","1","349"],
-	["47","Senate","1","986"],
-	["48","House","1","334"],
-	["48","Senate","1","428"],
-	["49","House","1","306"],
-	["49","Senate","1","461"],
-	["50","House","1","320"],
-	["50","Senate","1","389"],
-	["51","House","1","587"],
-	["51","Senate","1","526"],
-	["52","House","1","304"],
-	["52","Senate","1","209"],
-	["53","House","1","373"],
-	["53","Senate","1","561"],
-	["54","House","1","162"],
-	["54","Senate","1","197"],
-	["55","House","1","183"],
-	["55","Senate","1","381"],
-	["56","House","1","149"],
-	["56","Senate","1","169"],
-	["57","House","1","185"],
-	["57","Senate","1","118"],
-	["58","House","1","87"],
-	["58","Senate","1","92"],
-	["59","House","1","136"],
-	["59","Senate","1","128"],
-	["60","House","1","312"],
-	["60","Senate","1","84"],
-	["61","House","1","202"],
-	["61","Senate","1","268"],
-	["62","House","1","262"],
-	["62","Senate","1","396"],
-	["63","House","1","282"],
-	["63","Senate","1","572"],
-	["64","House","1","157"],
-	["64","Senate","1","406"],
-	["65","House","1","266"],
-	["65","Senate","1","384"],
-	["66","House","1","339"],
-	["66","Senate","1","407"],
-	["67","House","1","362"],
-	["67","Senate","1","751"],
-	["68","House","1","179"],
-	["68","Senate","1","235"],
-	["69","House","1","114"],
-	["69","Senate","1","236"],
-	["70","House","1","72"],
-	["70","Senate","1","191"],
-	["71","House","1","103"],
-	["71","Senate","1","436"],
-	["72","House","1","123"],
-	["72","Senate","1","280"],
-	["73","House","1","143"],
-	["73","Senate","1","228"],
-	["74","House","1","212"],
-	["74","Senate","1","193"],
-	["75","House","1","158"],
-	["75","Senate","1","174"],
-	["76","House","1","227"],
-	["76","Senate","1","266"],
-	["77","House","1","152"],
-	["77","Senate","1","192"],
-	["78","House","1","156"],
-	["78","Senate","1","220"],
-	["79","House","1","231"],
-	["79","Senate","1","244"],
-	["80","House","1","163"],
-	["80","Senate","1","248"],
-	["81","House","1","275"],
-	["81","Senate","1","455"],
-	["82","House","1","181"],
-	["82","Senate","1","313"],
-	["83","House","1","147"],
-	["83","Senate","1","271"],
-	["84","House","1","149"],
-	["84","Senate","1","217"],
-	["85","House","1","193"],
-	["85","Senate","1","307"],
-	["86","House","1","180"],
-	["86","Senate","1","422"],
-	["87","House","1","240"],
-	["87","Senate","1","428"],
-	["88","House","1","232"],
-	["88","Senate","1","534"],
-	["89","House","1","394"],
-	["89","Senate","1","497"],
-	["90","House","1","478"],
-	["90","Senate","1","596"],
-	["91","House","1","443"],
-	["91","Senate","1","666"],
-	["92","House","1","649"],
-	["92","Senate","1","955"],
-	["93","House","1","1078"],
-	["93","Senate","1","1138"],
-	["94","House","1","1273"],
-	["94","Senate","1","1311"],
-	["95","House","1","1540"],
-	["95","Senate","1","1156"],
-	["96","House","1","1276"],
-	["96","Senate","1","1054"],
-	["97","House","1","812"],
-	["97","Senate","1","966"],
-	["98","House","1","906"],
-	["98","Senate","1","663"],
-	["99","House","1","890"],
-	["99","Senate","1","740"],
-	["100","House","1","939"],
-	["100","Senate","1","799"],
-	["101","House","1","879"],
-	["101","Senate","1","638"],
-	["102","House","1","901"],
-	["102","Senate","1","550"],
-	["103","House","1","1094"],
-	["103","Senate","1","724"],
-	["104","House","1","1321"],
-	["104","Senate","1","919"],
-	["105","House","1","1166"],
-	["105","Senate","1","612"],
-	["106","House","1","1209"],
-	["106","Senate","1","672"],
-	["107","House","1","990"],
-	["107","Senate","1","633"],
-	["108","House","1","1218"],
-	["108","Senate","1","675"],
-	["109","House","1","1210"],
-	["109","Senate","1","645"],
-	["110","House","1","1865"],
-	["110","Senate","1","657"],
-	["111","House","1","1647"],
-	["111","Senate","1","696"],
-	["112","House","1","1602"],
-	["112","Senate","1","486"],
-	["113","House","1","1202"],
-	["113","Senate","1","657"],
-	["114","House","1","1322"],
-	["114","Senate","1","502"],
-	["115","House","1","1207"],
-	["115","Senate","1","599"],
-	["116","House","1","808"],
-	["116","Senate","1","530"]
-	];
-
-
-var getMMRollCallSelectionDDFromGivenCongress=function(cong_int,chamber)
+var setupHouseCongressSelections=function()
 	{
-	var fchamber="";
-	if(chamber=="senate")
+	var div_ids=["cong_house_sel_dd_div"];
+	var chamber_names=["house"];
+	for(var d=0;d<div_ids.length;d++)
 		{
-		fchamber="Senate";
-		}
-	else
-		{
-		fchamber=="House";
-		}
-	var targetCMM=cong_min_max_rollnums.filter(function(d)
-		{
-		var cong=parseInt(d[0]);
-		var chamb=d[1];
-		if(cong==cong_int && chamb==fchamber)
+		var selection_id="congress_"+chamber_names[d]+"_id";
+		var selectionHTML="<select    onchange=\"onChangeHouseCongress()\"   id=\""+selection_id+"\">\n";
+		var min_cong=35;
+		var max_cong=113;
+		for(var c=min_cong;c<=max_cong;c++)
 			{
-			return true;
+			selectionHTML+="<option value=\""+c+"\">"+c+"</option>\n";
 			}
-		return false;
-		});
-	//console.log("in get MM For cong_int = "+cong_int+" and chamber = "+chamber+", the filterd is "+targetCMM);
-	if(targetCMM.length!=1)
-		{
-		alert("Error in acquiring number roll calls for congress "+cong_int+" in the "+chamber);
-		return [-1,-1];
-		}
-	else
-		{
-		var min_roll=parseInt(targetCMM[0][2]);
-		var max_roll=parseInt(targetCMM[0][3]);
-		return [min_roll,max_roll];
+		selectionHTML+="</select>\n";
+		var sel_div=$('#'+div_ids[d]);
+		sel_div.html(selectionHTML);
+		
 		}
 	}
 
 
-var setupCongressSelections=function()
+var setupHouseCongressRCSelections=function()
+	{
+	var sel_ids=["congress_house_id"];
+	var chamber_names=["house"];
+	var impose_div_ids=["rollcall_house_sel_dd_div"];
+	for(var d=0;d<sel_ids.length;d++)
+		{
+		var cong_chamb_selection_val_raw=$('#'+sel_ids[d]).val();
+		console.log("Raw value is "+cong_chamb_selection_val_raw);
+		var cong_chamb_selection_val=parseInt(""+cong_chamb_selection_val_raw+"");
+		var cong_chamb=chamber_names[0];
+		//console.log("To call getMMRollCallSelectionDDFromGivenCongress with sel val of "+cong_chamb_selection_val+" and chamber ="+cong_chamb);
+		var cong_cham_mmvals=getMMRollCallSelectionDDFromGivenCongress(cong_chamb_selection_val,cong_chamb);
+		//console.log("From cong "+cong_chamb_selection_val+" and chamber "+cong_chamb+" the mm is "+JSON.stringify(cong_cham_mmvals));
+		if(cong_cham_mmvals!=null)
+			{
+			var min_rc=cong_cham_mmvals[0];
+			var max_rc=cong_cham_mmvals[1];
+			var selectionHTML="<select  style=\"width: 50px\"   onchange=\"onChangeHouseRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
+			for(var rc=min_rc;rc<=max_rc;rc++)
+				{
+				selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
+				}
+			selectionHTML+="</select>\n";
+			var sel_div=$('#'+impose_div_ids[d]);
+			sel_div.html(selectionHTML);
+			
+			}		
+		}
+	}
+
+
+var pullCongressHouseSelectionAndUpdateScatterPlot=function()
+	{
+	console.log("pullCongressHouseSelectionAndUpdateScatterPlot called");
+	var sen_cong_sel=pullHouseSelections();
+	var cong=sen_cong_sel[0];
+	var rc_callback=function(roll_call_num)
+		{
+		//console.log("RC_callback called with roll_call_num = "+roll_call_num);
+		var rc_selection_elem=$('#congress_rc_house_id');
+		if(rc_selection_elem!=null)
+			{
+			rc_selection_elem.val(roll_call_num);
+			onChangeHouseRC();
+			}
+		else
+			{
+			alert("Error in trying to set house roll-call value!");
+			}		
+		}
+	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
+	$('#scatter_plot_house_header_div').html('<h3>'+title_text+'</h3>');
+	issueScatterPlotUpdate("scatter_plot_house",cong,"House",rc_callback);
+	}
+
+var functionHouseTimeButterCallback=function(cong_num)
+	{
+	console.log("functionHouseTimeButterCallback called with cong_num="+cong_num);
+	var cong_house_sel_elem=$("#congress_house_id");
+	cong_house_sel_elem.val(cong_num);
+	onChangeHouseCongress();
+	}
+
+
+var onChangeHouseCongress=function()
+	{
+	//new congress is selected, update the roll-call list because they change per congress
+	console.log("onChangeHouseCongress called");
+	setupHouseCongressRCSelections();
+	pullCongressHouseSelectionAndUpdateScatterPlot();
+	onChangeHouseRC();
+	}
+
+var onChangeHouseRC=function()
+	{
+	console.log("onChangeHouseRC called");
+	pullHouseSelectionsAndUpdateSeating();
+	}
+
+var pullHouseSelections=function()
+	{
+	sel_ids=["congress_house_id","congress_rc_house_id"];
+	var sel_vals=[];
+	for(var v=0;v<sel_ids.length;v++)
+		{
+		var sel_elem=$('#'+sel_ids[v]);
+		var sel_val=sel_elem.val();
+		sel_vals.push(parseInt(""+sel_val+""));
+		}
+	var selectedCongress=sel_vals[0];
+	var selectedRC=sel_vals[1];
+	//console.log("Selected congress is "+selectedCongress+" and selected rollcall is "+selectedRC+"");
+	return [selectedCongress,selectedRC];
+	}
+
+
+
+
+var imposeHouseSeatingChart=function(cong_num,rollnum) {
+	//console.log("in imposeHouseSeatingChart");
+	//console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
+	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/house"
+	//console.log("url is "+url);
+	//d3.json(url[, callback])
+	d3.json(url,function(error, text) {
+		console.log("Error is "+error);
+		//console.log("text is "+JSON.stringify(text));
+		$('#house_seating_svg_id').html("");
+		update_seat_svg("house_seating_svg_id",text,275,10);
+		//eddie_func();
+		});
+	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
+	var detail_url="/rc_detail/"+cong_num+"/"+rollnum+"/House";
+		d3.json(detail_url,function(error,text) {
+				if(error!=null) {
+					$('#house_seatvote_detail_div').html("<h3>"+error+"</h3>");
+				} else {
+					var detail=text[0];
+					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
+					var post_text="Vote name unavailable !";
+					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
+					post_det_arr=post_det_arr.filter(function(x) {
+										return x!=null;
+										});
+					post_det_arr=post_det_arr.filter(function(x) {
+										return x.length>0
+										});
+					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
+					if(post_det_arr.length>0)
+						{
+						post_text=post_det_arr.join("<br>");
+						}
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br></h3>"+post_text;
+					$('#house_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
+				}
+			
+			});
+	//house_vote_detail_div
+	}
+
+
+var pullHouseSelectionsAndUpdateSeating=function()
+	{
+	console.log("pullHouseSelectionsAndUpdateSeating called");
+	var house_selections=pullHouseSelections();
+	imposeHouseSeatingChart(parseInt(house_selections[0]),parseInt(house_selections[1]));
+
+	
+	}
+
+
+
+
+		console.log("In html script...");
+		setupHouseCongressSelections();
+		setupHouseCongressRCSelections();
+		onChangeHouseCongress();
+	installSeatLegend("house_seat_legend_div",50);
+    </script>
+
+
+    
+
+
+    <script>
+
+
+
+var setupSenateCongressSelections=function()
 	{
 	var div_ids=["cong_sen_sel_dd_div"];
 	var chamber_names=["senate"];
@@ -392,7 +382,7 @@ var setupCongressSelections=function()
 	}
 
 
-var setupCongressRCSelections=function()
+var setupSenateCongressRCSelections=function()
 	{
 	var sel_ids=["congress_senate_id"];
 	var chamber_names=["senate"];
@@ -409,7 +399,7 @@ var setupCongressRCSelections=function()
 			{
 			var min_rc=cong_cham_mmvals[0];
 			var max_rc=cong_cham_mmvals[1];
-			var selectionHTML="<select onchange=\"onChangeSenateRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
+			var selectionHTML="<select  style=\"width: 50px\"   onchange=\"onChangeSenateRC()\"  id=\"congress_rc_"+chamber_names[d]+"_id\">\n";
 			for(var rc=min_rc;rc<=max_rc;rc++)
 				{
 				selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
@@ -423,22 +413,45 @@ var setupCongressRCSelections=function()
 	}
 
 
-var pullCongressSelectionAndUpdateScatterPlot=function()
+var pullCongressSenateSelectionAndUpdateScatterPlot=function()
 	{
 	console.log("pullCongressSelectionAndUpdateScatterPlot called");
 	var sen_cong_sel=pullSenateSelections();
 	var cong=sen_cong_sel[0];
-	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate");
+	var rc_callback=function(roll_call_num)
+		{
+		//console.log("RC_callback called with roll_call_num = "+roll_call_num);
+		var rc_selection_elem=$('#congress_rc_senate_id');
+		if(rc_selection_elem!=null)
+			{
+			rc_selection_elem.val(roll_call_num);
+			onChangeSenateRC();
+			}
+		else
+			{
+			alert("Error in trying to set roll-call value!");
+			}		
+		}
+	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
+	$('#scatter_plot_senate_header_div').html('<h3>'+title_text+'</h3>');
+	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate",rc_callback);
 	}
 
+var functionSenateTimeButterCallback=function(cong_num)
+	{
+	//console.log("functionSenateTimeButterCallback called with cong_num="+cong_num);
+	var cong_sen_sel_elem=$("#congress_senate_id");
+	cong_sen_sel_elem.val(cong_num);
+	onChangeSenateCongress();
+	}
 
 
 var onChangeSenateCongress=function()
 	{
 	//new congress is selected, update the roll-call list because they change per congress
 	console.log("onChangeSenateCongress called");
-	setupCongressRCSelections();
-	pullCongressSelectionAndUpdateScatterPlot();
+	setupSenateCongressRCSelections();
+	pullCongressSenateSelectionAndUpdateScatterPlot();
 	onChangeSenateRC();
 	}
 
@@ -464,17 +477,20 @@ var pullSenateSelections=function()
 	return [selectedCongress,selectedRC];
 	}
 
+
+
+
 var imposeSenateSeatingChart=function(cong_num,rollnum) {
-	console.log("in imposeSenateSeatingChart");
-	console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
+	//console.log("in imposeSenateSeatingChart");
+	//console.log("route @app.route('/getMemberVote/<int:congress>/<int:rollcall>/<string:chamber>'");
 	var url="/getMemberVote/"+cong_num+"/"+rollnum+"/senate"
-	console.log("url is "+url);
+	//console.log("url is "+url);
 	//d3.json(url[, callback])
 	d3.json(url,function(error, text) {
 		console.log("Error is "+error);
 		//console.log("text is "+JSON.stringify(text));
 		$('#senate_seating_svg_id').html("");
-		update_seat_svg("senate_seating_svg_id",text,480,10);
+		update_seat_svg("senate_seating_svg_id",text,200,10);
 		//eddie_func();
 		});
 	//detail_url=@app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
@@ -484,19 +500,21 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					$('#senate_seatvote_detail_div').html("<h3>"+error+"</h3>");
 				} else {
 					var detail=text[0];
-					console.log("DETAIL is "+JSON.stringify(detail,null,4));
+					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
-					post_det_arr=[detail['vote_description'],detail['vote_question'],detail['vote_detail_description']];
+					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
 					post_det_arr=post_det_arr.filter(function(x) {
 										return x!=null;
 										});
 					post_det_arr=post_det_arr.filter(function(x) {
 										return x.length>0
 										});
+					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
 					if(post_det_arr.length>0)
 						{
 						post_text=post_det_arr.join("<br>");
 						}
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br></h3>"+post_text;
 					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}
 			
@@ -518,10 +536,11 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
 
 		console.log("In html script...");
-		setupCongressSelections();
-		setupCongressRCSelections();
+		setupSenateCongressSelections();
+		setupSenateCongressRCSelections();
 		onChangeSenateCongress();
-
+	installSeatLegend("senate_seat_legend_div",50);
     </script>
+    <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
   </body>
 </html>

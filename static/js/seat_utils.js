@@ -1,4 +1,8 @@
 
+var get_party_colors=function(){
+	var party_colors={'Republican':'red','Democrat':'blue','Independent':'green'};
+	return party_colors;
+	}
 
 
 //https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
@@ -20,6 +24,82 @@ var cast_code_lookup ={
 	7:"Present (some Congresses)",
 	8:"Present (some Congresses)",
 	9:"Not Voting (Abstention)",
+	}
+
+
+var cast_code_to_color=function(cc,party_colors_map,party) {
+	/*console.log("cast_code_to_color called");
+	console.log("cast_code_to_color with cc="+cc);
+	console.log("cast_code_to_color called with map as : "+JSON.stringify(party_colors_map));
+	console.log("cast_code_to_color called with party  as : "+party);*/
+	if(cc==1)
+		{
+		//yay
+		var cc1ret="purple";
+		if(party in party_colors_map)
+			{
+			cc1ret=party_colors_map[party];
+			}
+		else
+			{
+			cc1ret="purple";
+			}
+		//console.log("Returning party color : "+cc1ret);
+		return cc1ret;
+		}
+	else if(cc==6)
+		{
+		//nay
+		return 'white';
+		}
+	else if(cc==9)
+		{
+		//absent!
+		return 'grey';
+		}
+	else
+		{
+		return 'yellow';
+		}
+	}
+
+
+var installSeatLegend=function(div_id,svg_dim)
+	{
+	console.log("start installSeatLegend");
+	var parties=["Democrat"];
+	var castCodes=[1,6,9,-1];
+	var castDescs=["Yay","Nay","Absent","Other (e.g. 'present' or 'announced')"];
+	var table_html="<table><thead></thead>";
+	for(var c=0;c<castCodes.length;c++)
+		{
+		table_html+="<tr>";
+		if(castCodes[c]!=1)
+			{
+			table_html+="<td>"+castDescs[c]+"</td>";
+			}
+		else
+			{
+			table_html+="<td>"+castDescs[c]+" (Party Color)</td>";
+			}
+
+		for(var p=0;p<parties.length;p++)
+			{
+			var svg_fill_color=cast_code_to_color(castCodes[c],get_party_colors(),parties[p]);
+			if(c==0) { svg_fill_color="black"; }
+			console.log("Svg rect fill color is "+svg_fill_color);
+			table_html+="<td>";
+				table_html+="<svg width="+svg_dim+" height="+svg_dim+">";
+				table_html+="<rect x=0 y=0  width="+svg_dim+" height="+svg_dim+" style=\"stroke:black; fill:"+svg_fill_color+"; \" ></rect>";
+				table_html+="</svg>";
+			table_html+="</td>";
+			}
+		//table_html+="<td>Republican "+castDescs[c]+"</td>";
+		table_html+="</tr>";		
+		}
+	table_html+="</table>";
+	$('#'+div_id).html(table_html);
+	console.log("finish installSeatLegend");		
 	}
 
 
@@ -395,4 +475,126 @@ assign_seats=function(seat_data,voters)
 		}
 	return voters_to_return;
 	}
+
+
+
+var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
+	//console.log("d is "+JSON.stringify(d));
+/*{"congress":"100","chamber":"Senate","icpsr":"7638","state_icpsr":"25","district_code":"0","state_abbrev":"WI","party_code":
+"100","occupancy":"0","last_means":"1","bioname":"PROXMIRE, William","bioguide_id":"P000553","born":"1915","died":"2005","nominate_dim1":"-0.598","nominate_dim2":"0.801",
+"nominate_log_likelihood":"-475.8294","nominate_geo_mean_probability":"0.473","nominate_number_of_votes":"636","nominate_number_of_errors":"210",
+"conditional":"","nokken_poole_dim1":"-0.613","nokken_poole_dim2":"0.79","rollnumber":"799","cast_code":"1","prob":"7.3"}*/
+	var d=data_arr;
+	/*d=d.map(function(x)  {
+		x['party']=x['party_name'];
+		console.log("To return : "+JSON.stringify(x));
+		return x;
+		});*/
+	voters=[];
+	for(var v=0;v<d.length;v++)
+		{
+		var vname=d[v]['bioname']+" of "+d[v]['state_abbrev'];
+		var vparty=d[v]['party_name'];
+		/*if(vparty=="Democrat")
+			{
+			vparty="Democrat";
+			}
+		else if(vparty=="Republican")
+			{
+			vparty="Republican";
+			}
+		else
+			{
+			vparty=d[v]
+			}*/
+		voters.push({'name':vname,'party':vparty,'vote':d[v]['cast_code']});
+		}
+	//console.log("Voters are "+JSON.stringify(voters));
+	var desk_width=getDeskWidth();
+	var seat_info=make_seat_info(desk_width,voters.length);
+	var voters_assigned_seats=assign_seats(seat_info,voters);
+
+	//console.log(JSON.stringify(voters_assigned_seats));
+
+
+	var svg_obj=d3.select("#"+svg_id);
+	var cong_g=svg_obj.append('g')
+		.attr('transform','translate('+trx_x+','+trx_y+') rotate(0)');
+
+
+
+		//console.log("mcumu "+JSON.stringify(cumu_data_list));	
+		var hoverGroup=svg_obj.append("g")
+			.style("visibility","hidden");
+		hoverGroup.append("rect")
+		.attr("x",-20)
+		.attr("y",-20)
+		.attr("width",100)
+		.attr("height",20)
+		.attr("fill","rgb(200,200,200)");
+		var hoverText = hoverGroup.append("text").attr("x",-14).attr("y",-5).text("hello!");
+
+		svg_obj.on("mousemove",function(d, i) { 
+		  var that = this;
+		  hoverGroup.attr("transform",function() {
+		    return "translate("+(d3.mouse(that)[0]+25)+","+(d3.mouse(that)[1]+55)+")";
+		});});
+
+		var the_gs=cong_g.selectAll('g').data(voters_assigned_seats)
+			.enter()
+			.append('g')
+			.attr('transform',function(d,i) { 
+					//return d['transform']; 
+					return  seat_info['data'][d['seat_id']]['transform']
+					});
+
+		var party_colors=get_party_colors();
+
+
+		the_gs.append('rect')
+			.attr('stroke-width',2)
+			.attr('stroke',function(d) {
+					if(d['party'] in party_colors)
+						{
+						return party_colors[d['party']];
+						}
+					return 'black';
+					})
+			.attr('x',function(d) { return seat_info['data'][d['seat_id']]['rect']['x'];})
+			.attr('y',function(d) { return seat_info['data'][d['seat_id']]['rect']['y'];})
+			.attr('width',function(d) { return seat_info['data'][d['seat_id']]['rect']['width'];})
+			.attr('height',function(d) { return seat_info['data'][d['seat_id']]['rect']['height'];})
+			.style('fill',function(d,i)
+					{
+					//console.log('d is '+JSON.stringify(d));
+					//console.log('party is '+d['party']);
+					//console.log('pc : '+JSON.stringify(party_colors));
+					var the_vote=parseInt(d['vote']);
+					var color=cast_code_to_color(the_vote,party_colors,d['party']);
+					return color;
+					})
+			.on("mouseenter",function(d,i) {
+					var the_voters_party=d['party'];
+					var the_voters_name=d['name'];
+					var the_vote=parseInt(d['vote']);
+					//return the_voters_name+":"+the_voters_party;
+					the_vote=cast_code_lookup[the_vote];
+					hoverText.text(the_voters_name+":"+the_voters_party+":s"+d['seat_id']+":V="+the_vote);
+					//https://stackoverflow.com/questions/1636842/svg-get-text-element-width
+					//https://stackoverflow.com/questions/36540141/why-cant-i-get-the-bounding-box-of-this-d3-js-text
+					var bbox = hoverText.node().getBBox();
+					hoverGroup.selectAll('rect').attr('width',bbox.width+10);
+					//hoverGroup.height=bbox.height;
+					hoverGroup.style("visibility","visible");
+					})
+			.on("mouseout",function() {
+					hoverGroup.style("visibility","hidden");
+					//hoverGroup.selectAll("rect").attr("width",75)
+					});
+
+
+
+
+	};
+
 

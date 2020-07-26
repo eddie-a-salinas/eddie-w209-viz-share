@@ -1,11 +1,12 @@
 
 
 var firstTimeObj={
-		"scatter_plot_senate":true
+		"scatter_plot_senate":true,
+		"scatter_plot_house":true
 	};
 
 var anim_time=1000;
-function svgScatterDraw(the_data,pk1,pk2,ftidx)
+function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 	{
 	//console.log('data to plot is '+JSON.stringify(the_data));
 	var svg_obj=d3.select('#'+ftidx);
@@ -23,10 +24,11 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 		.range([0,width-margin.right-margin.left]);
 
 
-	console.log('ft is '+isFirstTime);
+
 	var main_g=null;
 	var hoverGroup=null;
 	var isFirstTime=firstTimeObj[ftidx];
+	console.log('ft is '+isFirstTime);
 	if(isFirstTime)
 		{
 
@@ -37,7 +39,9 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 		//do gridlines
 		line_attr={"stroke":"black",
 			"stroke-dasharray":20};
-		var line_step=0.2;
+		var line_step=0.25;
+		var x_ticks=[];
+		var y_ticks=[];
 		for(var gx=0.0;gx<=1.0;gx+=line_step)
 			{
 			//console.log('ap line gx='+gx);
@@ -48,8 +52,9 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 				.attr("x2",xScale(gx))
 				.attr("y1",yScale(0.0))
 				.attr("y2",yScale(1.0));
+			x_ticks.push(gx);
 			}
-		for(var gy=0;gy<=1.0;gy+=line_step)
+		for(var gy=0.0;gy<=1.0;gy+=line_step)
 			{
 			//console.log('ap line yx='+gy);
 			main_g.append("line")
@@ -59,16 +64,22 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 				.attr("y2",yScale(gy))
 				.attr("x1",xScale(0.0))
 				.attr("x2",xScale(1.0));
+			y_ticks.push(gy);
 			}
 				
 		//do axes
+		//var x_ticks=8;
+		//var y_ticks=8;
+		console.log("x/y ticks : "+JSON.stringify(x_ticks)+"/"+JSON.stringify(y_ticks));
 		var x_axis_tx="translate(0,"+(height-margin.top-margin.bottom)+")";
 		var yAxis = d3.axisLeft(yScale)
-			.ticks(20);
+			.tickFormat(d3.format(",.2f"))
+			.tickValues(y_ticks);
 		main_g.append("g")
 			.call(yAxis);	
 		var xAxis=d3.axisBottom(xScale)
-			.ticks(20);
+			.tickFormat(d3.format(",.2f"))
+			.tickValues(x_ticks);
 		main_g.append("g")
 			.attr("transform",x_axis_tx)
 			.call(xAxis);
@@ -81,11 +92,39 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 			.append("text")
 			.text("% Republicans Voting Yay");
 		main_g.append("g")
-			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(0.63)+")")
+			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(0.70)+")")
 			.append("g")
 			.attr("transform","rotate(90)")
 			.append("text")
 			.text("% Democrats Voting Yay");
+
+		//bi-partisan "DMZ"
+		//<polygon points="0,100 50,25 50,75 100,0" />
+		var step=0.25;
+		var t_bl_step=0.0;
+		var poly_x=[0+t_bl_step , 0+t_bl_step    , 1.0-step , 1.0 , 1.0      , step+t_bl_step ];
+		var poly_y=[0+t_bl_step , step+t_bl_step , 1.0      , 1.0 , 1.0-step , 0.0+t_bl_step  ];
+		var poly_points=[];
+		for(var p=0;p<poly_x.length;p++)
+			{
+			poly_points.push(""+xScale(poly_x[p])+","+yScale(poly_y[p]));
+			}
+		var poly_points_str=poly_points.join(" ");
+		console.log("pps is "+poly_points_str);
+		main_g.append("polygon")
+			.attr("points",poly_points_str)
+			.attr("fill","purple")
+			.style("opacity",0.75);
+		var dmz_text="Bi-Partisan Zone";
+		main_g.append("text")
+			.attr("x",xScale(1-step-0.02))
+			.attr("y",yScale(1.0+0.01))
+			.text(dmz_text);
+		main_g.append("g")
+			.attr("transform","translate("+xScale(1.0+0.01)+","+yScale(1.0)+") rotate(90)")
+			.append("text")
+			.text(dmz_text);
+
 		}
 	else
 		{
@@ -129,13 +168,19 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 					{
 					disp_Text+=" : "+d['ddesc'];
 					}			
-				console.log('disp_text is '+disp_Text);
+				//console.log('disp_text is '+disp_Text);
 				var bbox=hoverText.text(disp_Text).nodes()[0].getBBox();
 				hoverGroup.selectAll('rect').attr('width',bbox.width+10);
 				})
 			.on("mouseout",function(d,i) {
 				hoverGroup.style("visibility","hidden");
 				})
+			.on("click",function(d,i)
+					{
+					//alert('you have clicked '+JSON.stringify(d)+' with i='+i);
+					var rollcall=d['rc'];
+					rc_callback(rollcall);
+					})
 			.transition(my_transition)
 			.attr("cx",function(d,i) {
 				if(pk1 in d)
@@ -160,7 +205,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 				var red_val=Math.ceil(255.0*d['Republican']);
 				var blue_val=Math.ceil(255.0*d['Democrat']);
 				//https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
-				var red_hex=red_val.toString(16);
+				/*var red_hex=red_val.toString(16);
 				if(red_hex.length==1)
 					{
 					red_hex="0"+red_hex;
@@ -171,12 +216,25 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 					blue_hex="0"+blue_hex;
 					}
 				var green_hex="00";
-				var ret_col="#"+red_hex+green_hex+blue_hex;
+				var ret_col="#"+red_hex+green_hex+blue_hex;*/
+				if(d['Republican']>d['Democrat'])
+					{
+					return "red";
+					}
+				else if(d['Democrat']>d['Republican'])
+					{
+					return "blue";
+					}
+				else
+					{
+					return 'purple';
+					}
 				return ret_col;
 				})
 			.attr("note",function(d,i) {
 					return JSON.stringify(d);
-					})
+					});
+
 
 		}
 	to_update(circs_to_plot);
@@ -218,7 +276,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx)
 
 
 
-function issueScatterPlotUpdate(svg_id,congress,chamber) {
+function issueScatterPlotUpdate(svg_id,congress,chamber,rc_callback) {
 	/*var cc=getCongCham();
 	var congress=cc[0];
 	var chamber=cc[1];*/
@@ -285,8 +343,10 @@ function issueScatterPlotUpdate(svg_id,congress,chamber) {
 						return;
 						}
 					//console.log("To draw with "+JSON.stringify(pct_data_plot,null,4));
-
-					svgScatterDraw(pct_data_plot,pk1,pk2,svg_id);
+					pk1=allowed_keys[0];
+					pk2=allowed_keys[1];
+					//console.log("PK1 as "+pk1+" AND PK2 as "+pk2);
+					svgScatterDraw(pct_data_plot,pk1,pk2,svg_id,rc_callback);
 					}
 				else
 					{
