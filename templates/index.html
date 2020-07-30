@@ -8,22 +8,24 @@
   </head>
   <body>
 	<div align="center">
-		<img width="75%" height="auto" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}">
+		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}">
 		<hr>
 		<div>
-			<table>
+			<table style="margin-left: auto; margin-right: auto; table-layout: fixed;">
 				<thead>
 				</thead>
 				<tbody>
 					<tr>
-						<td><div>116<br>Congresses</div></td>
-						<td>12,423<br>Roll Calls</td>
-						<td>183,586<br>Votes</td>
+						<td style="width=30%; ">116<br>Congresses</td>
+						<td style="width=30%;">12,423<br>Roll Calls</td>
+						<td style="width=30%;">183,586<br>Votes</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+
+
 
 <h2>Broad Story</h2>
 <p>In his famous 1858 Republican convention speech, President Lincoln warned that "A house divided against itself cannot
@@ -37,6 +39,13 @@ through the channels of party.
 that administration within the context of the political party. To that end, you can begin your exploration in Congress and
 navigate through the Senate or the House of Representatives, examining bill proposals and passages over time and
 drilling in on specific votes and the degree to which they reflect the political factionalism warned about in these speeches.
+<hr>
+<table  width=100%><thead><tr><td colspan=2><h3>Definitions</h3></td></tr></thead>
+<tbody>
+	<tr><td><h4><a href="https://www.senate.gov/reference/glossary_term/roll_call_vote.htm">Roll Call</a></h4></td><td style="text-align:left;" >An item (e.g. bill, resolution, official confirmation, etc.) over which congress votes.</td></tr>
+	<tr><td><h4>Congress </h4></td><td style="text-align:left;" >A time-series of meetings (roll-cllas), each lasting about 1-2 years, grouped into "sessions" covering both the <em>House</em> and <em>Senate</em>.  For this project all sessions for a given congress have been merged into a single session.</td></tr>
+</tbody></table>
+
 <hr>	
 <table>
 	<thead>
@@ -351,7 +360,7 @@ var pullHouseSelectionsAndUpdateSeating=function()
 		setupHouseCongressSelections();
 		setupHouseCongressRCSelections();
 		onChangeHouseCongress();
-	installUpdatedSeatLegend("house_seat_legend_div",50);
+	installUpdatedSeatLegend("house_seat_legend_div",25);
     </script>
 
 
