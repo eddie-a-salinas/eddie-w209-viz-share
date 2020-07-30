@@ -64,6 +64,60 @@ var cast_code_to_color=function(cc,party_colors_map,party) {
 	}
 
 
+var installUpdatedSeatLegend=function(div_id,svg_dim)
+	{
+	var castCodes=[1,6,9,-1];
+	var castDescs=["Yay","Nay","Absent","Other (e.g. 'present' or 'announced')"];	
+	var dHTML="";
+	dHTML="<table>";
+	dHTML+="<thead><tr>";
+	for(var cc=0;cc<castDescs.length;cc++)
+		{
+		if(cc==0)
+			{
+			dHTML+="<td>Party</td>";
+			}
+		dHTML+="<td>"+castDescs[cc]+"</td>";
+		}
+	dHTML+="</thead><tbody>";
+	var partyRowNames=[];
+	var party_colors_map=get_party_colors();
+	Object.keys(party_colors_map).map(function(party)
+		{
+		partyRowNames.push(party);		
+		});
+	partyRowNames.push("Other");
+	//console.log("partyRowNames is "+JSON.stringify(partyRowNames));
+	for(var p=0;p<partyRowNames.length;p++)
+		{
+		dHTML+="<tr><td>"+partyRowNames[p]+"</td>";
+		for(var c=0;c<castCodes.length;c++)
+			{
+			var partyColor=cast_code_to_color(castCodes[c],party_colors_map,partyRowNames[p]);
+			dHTML+="<td>";
+			dHTML+="<svg width="+svg_dim+" height="+svg_dim+">";
+			var partyStroke=partyColor;
+			if(partyRowNames[p]=="Other")
+				{
+				partyStroke="black";
+				}
+			else
+				{
+				partyStroke=party_colors_map[partyRowNames[p]];
+				}
+			
+			dHTML+="<rect x=0 y=0  width="+(svg_dim-0)+" height="+(svg_dim-0)+" style=\"stroke:"+partyStroke+"; stroke-width:4;   fill:"+partyColor+";\" ></rect>";
+			dHTML+="</svg>";			
+			dHTML+="</td>";
+			}
+		dHTML+="</tr>";
+		}
+	dHTML+="</tbody><table>";
+	$('#'+div_id).html(dHTML);
+	}
+
+
+
 var installSeatLegend=function(div_id,svg_dim)
 	{
 	console.log("start installSeatLegend");

@@ -339,7 +339,7 @@ var pullHouseSelectionsAndUpdateSeating=function()
 		setupHouseCongressSelections();
 		setupHouseCongressRCSelections();
 		onChangeHouseCongress();
-	installSeatLegend("house_seat_legend_div",50);
+	installUpdatedSeatLegend("house_seat_legend_div",50);
     </script>
 
 
@@ -519,7 +519,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 		setupSenateCongressSelections();
 		setupSenateCongressRCSelections();
 		onChangeSenateCongress();
-	installSeatLegend("senate_seat_legend_div",50);
+	installUpdatedSeatLegend("senate_seat_legend_div",50);
     </script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
   </body>
