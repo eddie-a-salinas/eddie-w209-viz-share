@@ -90,7 +90,7 @@ def getMemberVote(congress,rollcall,chamber):
 @app.route('/pct_party/<int:congress>/<string:chamber>')
 def getPctPartyCache(congress,chamber):
 	c_int=int(congress)
-	f_base="data/memo_party/pp."+chamber+"."+str(c_int).zfill(3)+".json"
+	f_base="data/memo_party/wdpp."+chamber+"."+str(c_int).zfill(3)+".json"
 	if(os.path.exists(f_base)):
 		#print("f_base is "+str(f_base))
 		return send_file(f_base)
@@ -119,7 +119,7 @@ def ipathRet(ipath):
 @app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
 def getRollCallDetail(congress,rcnum,chamber):
     c_int=int(congress)
-    f_base="data/memo_party/pp."+chamber.capitalize()+"."+str(c_int).zfill(3)+".json"
+    f_base="data/memo_party/wdpp."+chamber.capitalize()+"."+str(c_int).zfill(3)+".json"
     if(os.path.exists(f_base)):
         #print("f_base is "+str(f_base))
         #return send_file(f_base)

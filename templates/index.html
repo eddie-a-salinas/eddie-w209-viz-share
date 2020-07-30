@@ -242,8 +242,19 @@ var pullCongressHouseSelectionAndUpdateScatterPlot=function()
 			alert("Error in trying to set house roll-call value!");
 			}		
 		}
-	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
-	$('#scatter_plot_house_header_div').html('<h3>'+title_text+'</h3>');
+	var cong_to_year_dict=get_cong_to_year_map();
+	var ann_text="";
+	if(cong+"" in cong_to_year_dict)
+		{
+		var year_range=cong_to_year_dict[""+cong];
+		ann_text="From "+year_range.join(" to ");
+		}
+	var title_text="<h3>Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress in the House</h3>";
+	if(ann_text.length>1)
+		{
+		title_text+=ann_text;
+		}
+	$('#scatter_plot_house_header_div').html(title_text);
 	issueScatterPlotUpdate("scatter_plot_house",cong,"House",rc_callback);
 	}
 
@@ -313,8 +324,9 @@ var imposeHouseSeatingChart=function(cong_num,rollnum) {
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
+					post_det_arr=post_det_arr.filter(function(d) { if(d.length>0) { return true; } else { return  false;}});
 					post_text=post_det_arr.join("<br>");
-					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br></h3>"+post_text;
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br>Held "+detail['rollcall_date']+"</h3>"+post_text;
 					$('#house_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}
 			
@@ -422,8 +434,19 @@ var pullCongressSenateSelectionAndUpdateScatterPlot=function()
 			alert("Error in trying to set roll-call value!");
 			}		
 		}
-	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
-	$('#scatter_plot_senate_header_div').html('<h3>'+title_text+'</h3>');
+	var cong_to_year_dict=get_cong_to_year_map();
+	var ann_text="";
+	if(cong+"" in cong_to_year_dict)
+		{
+		var year_range=cong_to_year_dict[""+cong];
+		ann_text="From "+year_range.join(" to ");
+		}
+	var title_text="<h3>Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress in the Senate</h3>";
+	if(ann_text.length>1)
+		{
+		title_text+=ann_text;
+		}
+	$('#scatter_plot_senate_header_div').html(title_text);
 	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate",rc_callback);
 	}
 
@@ -493,8 +516,9 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
+					post_det_arr=post_det_arr.filter(function(d) { if(d.length>0) { return true; } else { return false;}});
 					post_text=post_det_arr.join("<br>");
-					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br></h3>"+post_text;
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br>Held "+detail['rollcall_date']+"</h3>"+post_text;
 					$('#senate_seatvote_detail_div').html(post_text);
 				}
 			
