@@ -85,7 +85,7 @@ drilling in on specific votes and the degree to which they reflect the political
 			<td>
 
 				<!-- seating chart -->
-				<div id="senate_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<div id="senate_seatvote_detail_div"  class="senate_house_rc_detail"></div>
 				<table>
 					<tr>
 					<td><svg id="senate_seating_svg_id" width=400 height=460   overflow="visible" ></svg></td>
@@ -147,7 +147,7 @@ drilling in on specific votes and the degree to which they reflect the political
 			<td>
 
 				<!-- seating chart -->
-				<div id="house_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<div id="house_seatvote_detail_div" class="senate_house_rc_detail"></div>
 				<table>
 					<tr>
 					<td><svg id="house_seating_svg_id" width=750 height=660   overflow="visible" ></svg></td>
@@ -313,17 +313,7 @@ var imposeHouseSeatingChart=function(cong_num,rollnum) {
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x!=null;
-										});
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x.length>0
-										});
-					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
-					if(post_det_arr.length>0)
-						{
-						post_text=post_det_arr.join("<br>");
-						}
+					post_text=post_det_arr.join("<br>");
 					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br></h3>"+post_text;
 					$('#house_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}
@@ -503,19 +493,9 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x!=null;
-										});
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x.length>0
-										});
-					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
-					if(post_det_arr.length>0)
-						{
-						post_text=post_det_arr.join("<br>");
-						}
+					post_text=post_det_arr.join("<br>");
 					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br></h3>"+post_text;
-					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
+					$('#senate_seatvote_detail_div').html(post_text);
 				}
 			
 			});

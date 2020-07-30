@@ -495,31 +495,95 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		{
 		var vname=d[v]['bioname']+" of "+d[v]['state_abbrev'];
 		var vparty=d[v]['party_name'];
-		/*if(vparty=="Democrat")
-			{
-			vparty="Democrat";
-			}
-		else if(vparty=="Republican")
-			{
-			vparty="Republican";
-			}
-		else
-			{
-			vparty=d[v]
-			}*/
 		voters.push({'name':vname,'party':vparty,'vote':d[v]['cast_code']});
 		}
 	//console.log("Voters are "+JSON.stringify(voters));
+	var vote_filter_func=function(v,cf)
+		{
+		//console.log("A voter if "+JSON.stringify(v));
+		var cc=v['vote'];
+		//console.log("their cast code is "+cc);
+		if(cc==cf)
+			{
+			return true;
+			}
+		return false;
+		}
+
+
+	var yay_voters=voters.filter(function(v) {
+					return vote_filter_func(v,1);
+					});
+	var nay_voters=voters.filter(function(v) {
+					return vote_filter_func(v,6);
+					});
+	//console.log("YAY voters : "+JSON.stringify(yay_voters));
+	var num_yay_voters=yay_voters.length;
+	var num_nay_voters=nay_voters.length;
+	//console.log("Num yay :"+num_yay_voters);
+	//console.log("Num non-yay :"+num_non_nay_voters);
+	var pf_rc_frac=(num_yay_voters/(num_yay_voters+num_nay_voters))*100.0;
+	var pf_fv=Math.ceil(pf_rc_frac);
+	var pf_text="";
+	var pf_sym="";
+	var sym_overlay="";
+	pf_text=" "+pf_fv+"%";
+	var sym_over_color="";
+	if(pf_fv>50)
+		{
+		pf_sym='\u{1F4DC}'; //scroll
+		sym_overlay='\u2714' //checkmark
+		sym_over_color="green";
+		}
+	else
+		{
+		pf_sym='\u{1F4DC}'; //scroll
+		sym_overlay="X"; //X
+		sym_over_color="red";
+		}
+
+
+	
+	
+	
 	var desk_width=getDeskWidth();
 	var seat_info=make_seat_info(desk_width,voters.length);
 	var voters_assigned_seats=assign_seats(seat_info,voters);
-
-	//console.log(JSON.stringify(voters_assigned_seats));
 
 
 	var svg_obj=d3.select("#"+svg_id);
 	var cong_g=svg_obj.append('g')
 		.attr('transform','translate('+trx_x+','+trx_y+') rotate(0)');
+
+
+	//PASS percentage text
+	text_y=40;
+	text_sym_x=-35;
+	text_sym_delta=55;
+	cong_g.append("text")
+		.attr("x",text_sym_x+text_sym_delta)
+		.attr("y",text_y)
+		.text(pf_text)
+		.attr("font-size","3em");
+	//symbol text
+	var sym_text_svg_elem=cong_g.append("text")
+		.attr("x",text_sym_x)
+		.attr("y",text_y)
+		.text(pf_sym)
+		.attr("font-size","3em");
+var bboxGroup = sym_text_svg_elem.node().getBBox(); 
+/*rectBBox.setAttribute('x', bboxGroup.x); 
+rectBBox.setAttribute('y', bboxGroup.x); 
+rectBBox.setAttribute('width', bboxGroup.width); 
+rectBBox.setAttribute('height', bboxGroup.height); */
+	//symbol overlay
+	cong_g.append("text")
+		.attr("x",(bboxGroup.x+(bboxGroup.width-bboxGroup.x)/6))
+		.attr("y",bboxGroup.y+bboxGroup.height*0.75)
+		.text(sym_overlay)
+		.attr("fill",sym_over_color)
+		.attr("font-size","3em");
+
 
 
 

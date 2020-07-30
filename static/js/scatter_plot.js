@@ -201,35 +201,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 			.attr("r",4)
 			.attr("stroke","black")
 			.attr("fill",function(d,i) {
-				//return "yellow";
-				var red_val=Math.ceil(255.0*d['Republican']);
-				var blue_val=Math.ceil(255.0*d['Democrat']);
-				//https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
-				/*var red_hex=red_val.toString(16);
-				if(red_hex.length==1)
-					{
-					red_hex="0"+red_hex;
-					}
-				var blue_hex=blue_val.toString(16);
-				if(blue_hex.length==1)
-					{
-					blue_hex="0"+blue_hex;
-					}
-				var green_hex="00";
-				var ret_col="#"+red_hex+green_hex+blue_hex;*/
-				if(d['Republican']>d['Democrat'])
-					{
-					return "red";
-					}
-				else if(d['Democrat']>d['Republican'])
-					{
-					return "blue";
-					}
-				else
-					{
-					return 'purple';
-					}
-				return ret_col;
+					return "gray";
 				})
 			.attr("note",function(d,i) {
 					return JSON.stringify(d);
