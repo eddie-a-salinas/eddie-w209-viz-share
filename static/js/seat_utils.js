@@ -1,6 +1,6 @@
 
 var get_party_colors=function(){
-	var party_colors={'Republican':'red','Democrat':'blue','Independent':'green'};
+	var party_colors={'Republican':'red','Democrat':'blue'};
 	return party_colors;
 	}
 
@@ -35,14 +35,10 @@ var cast_code_to_color=function(cc,party_colors_map,party) {
 	if(cc==1)
 		{
 		//yay
-		var cc1ret="purple";
+		var cc1ret="green";
 		if(party in party_colors_map)
 			{
 			cc1ret=party_colors_map[party];
-			}
-		else
-			{
-			cc1ret="purple";
 			}
 		//console.log("Returning party color : "+cc1ret);
 		return cc1ret;
@@ -52,22 +48,18 @@ var cast_code_to_color=function(cc,party_colors_map,party) {
 		//nay
 		return 'white';
 		}
-	else if(cc==9)
-		{
-		//absent!
-		return 'grey';
-		}
 	else
 		{
-		return 'yellow';
+		//non-yay and non-nay!
+		return 'grey';
 		}
 	}
 
 
 var installUpdatedSeatLegend=function(div_id,svg_dim)
 	{
-	var castCodes=[1,6,9,-1];
-	var castDescs=["Yay","Nay","Absent","Other (e.g. 'present' or 'announced')"];	
+	var castCodes=[1,6,-1];
+	var castDescs=["Yay","Nay","Absent/Other (e.g. 'present' or 'announced')"];	
 	var dHTML="";
 	dHTML="<table>";
 	dHTML+="<thead><tr>";

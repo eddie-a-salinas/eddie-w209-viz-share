@@ -99,8 +99,9 @@ drilling in on specific votes and the degree to which they reflect the political
 				<div id="senate_seatvote_detail_div"  class="senate_house_rc_detail"></div>
 				<table>
 					<tr>
-					<td><svg id="senate_seating_svg_id" width=400 height=460   overflow="visible" ></svg></td>
-					<td><div style="text-align: left; float: left;" id="senate_seat_legend_div">BLAH</div></td>
+						<td><svg id="senate_seating_svg_id" width=400 height=325   overflow="visible" ></svg>
+						<div  style="vertical-align:top;" id="senate_seat_legend_div">BLAH</div>
+						</td>
 					</tr>
 				</table>		
 				
@@ -163,8 +164,10 @@ drilling in on specific votes and the degree to which they reflect the political
 				<div id="house_seatvote_detail_div" class="senate_house_rc_detail"></div>
 				<table>
 					<tr>
-					<td><svg id="house_seating_svg_id" width=750 height=660   overflow="visible" ></svg></td>
-					<td><div style="text-align: left; float: left;" id="house_seat_legend_div">BLAH</div></td>
+					<td>
+						<svg id="house_seating_svg_id" width=750 height=535 overflow="visible" ></svg>
+						<div style="vertical-align:top;"  id="house_seat_legend_div">BLAH</div>
+					</td>
 					</tr>
 				</table>		
 				
@@ -556,7 +559,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 		setupSenateCongressSelections();
 		setupSenateCongressRCSelections();
 		onChangeSenateCongress();
-	installUpdatedSeatLegend("senate_seat_legend_div",50);
+	installUpdatedSeatLegend("senate_seat_legend_div",25);
     </script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
   </body>
