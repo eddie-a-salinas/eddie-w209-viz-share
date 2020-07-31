@@ -91,7 +91,7 @@ var installUpdatedSeatLegend=function(div_id,svg_dim)
 			var partyStroke=partyColor;
 			if(partyRowNames[p]=="Other")
 				{
-				partyStroke="black";
+				partyStroke="green";
 				}
 			else
 				{
@@ -664,7 +664,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 						{
 						return party_colors[d['party']];
 						}
-					return 'black';
+					return 'green';
 					})
 			.attr('x',function(d) { return seat_info['data'][d['seat_id']]['rect']['x'];})
 			.attr('y',function(d) { return seat_info['data'][d['seat_id']]['rect']['y'];})
