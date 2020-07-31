@@ -152,28 +152,14 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 		{
 		elems
 			.on("mouseenter",function(d,i) {
-				console.log("d is "+JSON.stringify(d));
-				hoverGroup.style("visibility","visible");
-				var hoverText=hoverGroup.select("#hovertextid");
-				var disp_Text="#"+d['rc'];
-				if(d['qust'].length>=1)
-					{
-					disp_Text+=" : "+d['qust'];
-					}
-				if(d['desc'].length>=1)
-					{
-					disp_Text+=" : "+d['desc'];
-					}
-				if(disp_Text.length<=5)
-					{
-					disp_Text+=" : "+d['ddesc'];
-					}			
-				//console.log('disp_text is '+disp_Text);
-				var bbox=hoverText.text(disp_Text).nodes()[0].getBBox();
-				hoverGroup.selectAll('rect').attr('width',bbox.width+10);
+				d3.select(this)
+					.attr("r",6);
 				})
 			.on("mouseout",function(d,i) {
 				hoverGroup.style("visibility","hidden");
+				d3.select(this)
+					.attr("fill","gray")
+					.attr("r",4);
 				})
 			.on("click",function(d,i)
 					{
@@ -202,10 +188,13 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 			.attr("stroke","black")
 			.attr("fill",function(d,i) {
 					return "gray";
-				})
-			.attr("note",function(d,i) {
-					return JSON.stringify(d);
-					});
+				});
+		elems.append("title").text(function(d,i) {
+				//return JSON.stringify(d);
+				var rollcall=d['rc']
+				return "Roll Call "+rollcall;
+				});
+
 
 
 		}
