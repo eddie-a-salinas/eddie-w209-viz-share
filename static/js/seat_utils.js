@@ -657,7 +657,9 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		var party_colors=get_party_colors();
 
 
-		the_gs.append('rect')
+		var the_seats=the_gs.append('rect');
+
+		the_seats
 			.attr('stroke-width',2)
 			.attr('stroke',function(d) {
 					if(d['party'] in party_colors)
@@ -680,23 +682,34 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 					return color;
 					})
 			.on("mouseenter",function(d,i) {
-					var the_voters_party=d['party'];
-					var the_voters_name=d['name'];
-					var the_vote=parseInt(d['vote']);
-					//return the_voters_name+":"+the_voters_party;
-					the_vote=cast_code_lookup[the_vote];
-					hoverText.text(the_voters_name+":"+the_voters_party+":s"+d['seat_id']+":V="+the_vote);
+
 					//https://stackoverflow.com/questions/1636842/svg-get-text-element-width
 					//https://stackoverflow.com/questions/36540141/why-cant-i-get-the-bounding-box-of-this-d3-js-text
 					var bbox = hoverText.node().getBBox();
 					hoverGroup.selectAll('rect').attr('width',bbox.width+10);
 					//hoverGroup.height=bbox.height;
-					hoverGroup.style("visibility","visible");
+					//hoverGroup.style("visibility","visible");
+					d3.select(this)
+						.attr("stroke-width",4);
 					})
 			.on("mouseout",function() {
 					hoverGroup.style("visibility","hidden");
 					//hoverGroup.selectAll("rect").attr("width",75)
-					});
+					d3.select(this)
+						.attr("stroke-width",2);
+					})
+		the_seats.append("title")
+			.text(function(d,i) {
+				var the_voters_party=d['party'];
+				var the_voters_name=d['name'];
+				var the_vote=parseInt(d['vote']);
+				//return the_voters_name+":"+the_voters_party;
+				the_vote=cast_code_lookup[the_vote];
+				//hoverText.text(the_voters_name+":"+the_voters_party+":s"+d['seat_id']+":V="+the_vote);
+				var tt_text=the_voters_name+"\nParty:  "+the_voters_party.trim()+"\nVote:    "+the_vote.trim()+"\n\Seat:    "+d['seat_id'];
+				return tt_text;
+				});
+			
 
 
 
