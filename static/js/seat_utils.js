@@ -581,7 +581,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 	var pf_text="";
 	var pf_sym="";
 	var sym_overlay="";
-	pf_text=" "+pf_fv+"%";
+	pf_text=" "+pf_fv+"% Yay";
 	var sym_over_color="";
 	if(pf_fv>50)
 		{
@@ -612,7 +612,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 
 	//PASS percentage text
 	text_y=40;
-	text_sym_x=-35;
+	text_sym_x=0-trx_x/2.25;
 	text_sym_delta=55;
 	cong_g.append("text")
 		.attr("x",text_sym_x+text_sym_delta)
@@ -625,14 +625,10 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		.attr("y",text_y)
 		.text(pf_sym)
 		.attr("font-size","3em");
-var bboxGroup = sym_text_svg_elem.node().getBBox(); 
-/*rectBBox.setAttribute('x', bboxGroup.x); 
-rectBBox.setAttribute('y', bboxGroup.x); 
-rectBBox.setAttribute('width', bboxGroup.width); 
-rectBBox.setAttribute('height', bboxGroup.height); */
+	var bboxGroup = sym_text_svg_elem.node().getBBox(); 
 	//symbol overlay
 	cong_g.append("text")
-		.attr("x",(bboxGroup.x+(bboxGroup.width-bboxGroup.x)/6))
+		.attr("x",(bboxGroup.x+(bboxGroup.width/4)))
 		.attr("y",bboxGroup.y+bboxGroup.height*0.75)
 		.text(sym_overlay)
 		.attr("fill",sym_over_color)
