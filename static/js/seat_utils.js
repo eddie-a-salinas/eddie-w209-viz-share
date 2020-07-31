@@ -67,9 +67,9 @@ var installUpdatedSeatLegend=function(div_id,svg_dim)
 		{
 		if(cc==0)
 			{
-			dHTML+="<td>Party</td>";
+			dHTML+="<th>Party</hd>";
 			}
-		dHTML+="<td>"+castDescs[cc]+"</td>";
+		dHTML+="<th>"+castDescs[cc]+"</th>";
 		}
 	dHTML+="</thead><tbody>";
 	var partyRowNames=[];

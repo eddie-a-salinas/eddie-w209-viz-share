@@ -18,8 +18,8 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td style="width=30%; ">116<br>Congresses</td>
-						<td style="width=30%;">12,423<br>Roll Calls</td>
+						<td style="width=30%; ">79<br>Congresses</td>
+						<td style="width=30%;">83,117<br>Roll Calls</td>
 						<td style="width=30%;">183,586<br>Votes</td>
 					</tr>
 				</tbody>
@@ -113,11 +113,14 @@ drilling in on specific votes and the degree to which they reflect the political
 	</tbody>
 </table>
 <!-- SENATE DATATABLE -->
+<div align="center">
 <h3 align="center">Senate RollCall Search Table</h3>
+Use the search field to the right.  Click the rollcall to load the row into the visualizations
+</div>
 <table border=1 id="senate_datatable" class="display" width="100%" style="width:100%">
 	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> </tr> </thead> 
 	<tbody></tbody>
-<table>
+</table>
 
 
 <!------------HOUSE---------------->
@@ -187,11 +190,14 @@ drilling in on specific votes and the degree to which they reflect the political
 	</tbody>
 </table>
 <!-- SENATE DATATABLE -->
+<div align="center">
 <h3 align="center">House RollCall Search Table</h3>
+Use the search field to the right.  Click the rollcall to load the row into the visualizations
+</div>
 <table border=1 id="house_datatable" class="display" width="100%" style="width:100%">
 	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> </tr> </thead> 
 	<tbody></tbody>
-<table>
+</table>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
@@ -605,7 +611,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
 //HOUSE DATATABLE
     $('#house_datatable').DataTable( {
-        "ajax": 'rc_datatable/senate',
+        "ajax": 'rc_datatable/house',
 	 "columns": [
 		{},
 		 {"render": function(data, type, row, meta)
