@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   </head>
-  <body>
+  <body >
+	<!--<div style="z-index: 99; position: fixed; left: 10px; top: 10px; ">DIV</div>-->
 	<div align="center">
 		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}">
 		<hr>
@@ -53,6 +54,13 @@ drilling in on specific votes and the degree to which they reflect the political
 	<thead>
 		<tr>
 			<td colspan=3>
+				<!--<div style="z-index: 0; position: absolute; left: 10px; top: 10px; background-color:red;">
+					<svg>
+						<g transform="translate(20,50) rotate(-90) ">
+							<text>HELLO</text>
+						</g>
+					</svg>
+				</div> -->
 				<h1>Senate Dashboard</h1>
 			</td>
 		<td>
@@ -118,7 +126,7 @@ drilling in on specific votes and the degree to which they reflect the political
 Use the search field to the right.  Click the rollcall to load the row into the visualizations
 </div>
 <table border=1 id="senate_datatable" class="display" width="100%" style="width:100%">
-	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> </tr> </thead> 
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> <th>% Yay</th>  </tr> </thead> 
 	<tbody></tbody>
 </table>
 
@@ -195,9 +203,10 @@ Use the search field to the right.  Click the rollcall to load the row into the 
 Use the search field to the right.  Click the rollcall to load the row into the visualizations
 </div>
 <table border=1 id="house_datatable" class="display" width="100%" style="width:100%">
-	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> </tr> </thead> 
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th>  <th>% Yay</th> </tr> </thead> 
 	<tbody></tbody>
 </table>
+	<svg width=10 height=400></svg>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
@@ -588,6 +597,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
 //SENATE DATATABLE
     $('#senate_datatable').DataTable( {
+	"dom": '<"top"rflp>t<"bottom"i><"clear">',
         "ajax": 'rc_datatable/senate',
 	 "columns": [
 		{},
@@ -605,12 +615,13 @@ var pullSenateSelectionsAndUpdateSeating=function()
 				}
 			return data;
 			}
-		},{},{},{},{}
+		},{},{},{},{},{}
 	]
     } );
 
 //HOUSE DATATABLE
     $('#house_datatable').DataTable( {
+	"dom": '<"top"rflp>t<"bottom"i><"clear">',
         "ajax": 'rc_datatable/house',
 	 "columns": [
 		{},
@@ -628,7 +639,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 				}
 			return data;
 			}
-		},{},{},{},{}
+		},{},{},{},{},{}
 	]
     } );
 

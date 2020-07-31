@@ -138,6 +138,23 @@ def getrcdatatable(chamber):
 			json_data=json.load(json_reader)
 			rcdata=json_data['roll_calldata']
 			for rci in range(len(rcdata)):
+				yay_count=0
+				nay_count=0
+				other_count=0
+				for party in rcdata[rci]['vote_data']:
+					for cast_code in rcdata[rci]['vote_data'][party]:
+						cast_code_count=rcdata[rci]['vote_data'][party][cast_code]
+						if(cast_code=="1"):
+							yay_count+=cast_code_count
+						elif(cast_code=="6"):
+							nay_count+=cast_code_count
+						else:
+							other_count+=cast_code_count
+				nay_and_yay=nay_count+yay_count
+				if(nay_and_yay>0):
+					pct_yay=100.0*(float(yay_count)/float(nay_and_yay))
+				else:
+					pct_yay=0.0
 				temp_arr=list()
 				temp_arr.append(getCongNumFromMemoFile(os.path.basename(mp_file)))
 				temp_arr.append(rcdata[rci]['rollcall'])
@@ -148,12 +165,12 @@ def getrcdatatable(chamber):
 				nice_desc=[rcdata[rci]['vote_question'],rcdata[rci]['vote_description'],rcdata[rci]['vote_detail_description']]
 				nice_desc=filter(lambda x: len(str(x))>=2,nice_desc)
 				temp_arr.append(" : ".join(nice_desc))
+				temp_arr.append("{:.2f}".format(pct_yay))
 				data_arr.append(temp_arr)
 	final_data_obj=dict()
 	final_data_obj['data']=data_arr
 	return final_data_obj
-	#return my_cham_data
-	
+
 
 
 @app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
