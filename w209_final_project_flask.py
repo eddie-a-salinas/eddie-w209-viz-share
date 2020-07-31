@@ -1,5 +1,6 @@
 from flask import Flask, render_template,send_file, abort
 import json
+import re
 import pandas as pd
 import numpy as np
 import os
@@ -114,6 +115,45 @@ def ipathRet(ipath):
 		return send_file(fpath)
 	else:
 		abort(404,description="Image not found!")
+
+
+def getCongNumFromMemoFile(mp_bn):
+	return int(re.search("\.([0-9]{3})\.json$",mp_bn).group(1))
+
+
+@app.route('/rc_datatable/<chamber>')
+def getrcdatatable(chamber):
+	#/bin/echo -ne "SELECT rollnumber,date,vote_result,vote_desc,vote_question,dtl_desc FROM rollcalls WHERE chamber='Senate' AND CAST(congress as int)>=35 AND CAST(congress as int)<=113;"| sqlite3  data/cong_data.db
+	min_congress=35
+	max_congress=113
+	mp_files=list()
+	for cn in range(min_congress,max_congress+1):
+		#mp_file="data/memo_party/wdpp.Senate.116.json
+		mp_file="data/memo_party/wdpp."+chamber.capitalize()+"."+str(cn).zfill(3)+".json"
+		mp_files.append(mp_file)
+	data_arr=list()
+	for mp_file in mp_files:
+		#print(mp_file)
+		with open(mp_file,'r') as json_reader:
+			json_data=json.load(json_reader)
+			rcdata=json_data['roll_calldata']
+			for rci in range(len(rcdata)):
+				temp_arr=list()
+				temp_arr.append(getCongNumFromMemoFile(os.path.basename(mp_file)))
+				temp_arr.append(rcdata[rci]['rollcall'])
+				ymd=rcdata[rci]['rollcall_date'].split('-')
+				temp_arr.append(ymd[1])#m
+				temp_arr.append(ymd[2])#d
+				temp_arr.append(ymd[0])#y
+				nice_desc=[rcdata[rci]['vote_question'],rcdata[rci]['vote_description'],rcdata[rci]['vote_detail_description']]
+				nice_desc=filter(lambda x: len(str(x))>=2,nice_desc)
+				temp_arr.append(" : ".join(nice_desc))
+				data_arr.append(temp_arr)
+	final_data_obj=dict()
+	final_data_obj['data']=data_arr
+	return final_data_obj
+	#return my_cham_data
+	
 
 
 @app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')

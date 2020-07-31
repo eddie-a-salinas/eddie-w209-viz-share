@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <meta charset="UTF-8" />
     <title>Congress Voting Visualization</title>
-    <link rel="stylesheet"type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   </head>
   <body>
 	<div align="center">
@@ -110,6 +112,14 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 	</tbody>
 </table>
+<!-- SENATE DATATABLE -->
+<h3 align="center">Senate RollCall Search Table</h3>
+<table border=1 id="senate_datatable" class="display" width="100%" style="width:100%">
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> </tr> </thead> 
+	<tbody></tbody>
+<table>
+
+
 <!------------HOUSE---------------->
 <hr>	
 <table>
@@ -176,11 +186,18 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 	</tbody>
 </table>
+<!-- SENATE DATATABLE -->
+<h3 align="center">House RollCall Search Table</h3>
+<table border=1 id="house_datatable" class="display" width="100%" style="width:100%">
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> </tr> </thead> 
+	<tbody></tbody>
+<table>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
     <script src="{{ url_for('static', filename='js/scatter_plot.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/utils_test.js') }}" ></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
 
 
@@ -560,6 +577,56 @@ var pullSenateSelectionsAndUpdateSeating=function()
 		setupSenateCongressRCSelections();
 		onChangeSenateCongress();
 	installUpdatedSeatLegend("senate_seat_legend_div",25);
+
+
+
+//SENATE DATATABLE
+    $('#senate_datatable').DataTable( {
+        "ajax": 'rc_datatable/senate',
+	 "columns": [
+		{},
+		 {"render": function(data, type, row, meta)
+			{
+			if(type === 'display')
+				{
+				//data = '<a href="' + data + '">' + data + '</a>';
+				//$('#congress_rc_senate_id').val(
+				//console.log('row is '+JSON.stringify(row));
+				var selected_rollcall=row[1];
+				var selected_congress=row[0];
+				var js_to_run="$('#congress_rc_senate_id').val("+selected_rollcall+");$('#congress_senate_id').val("+selected_congress+");pullCongressSenateSelectionAndUpdateScatterPlot();imposeSenateSeatingChart("+selected_congress+","+selected_rollcall+");"
+				data="<a href=\"javascript:"+js_to_run+";\" >"+data+"</a>";
+				}
+			return data;
+			}
+		},{},{},{},{}
+	]
+    } );
+
+//HOUSE DATATABLE
+    $('#house_datatable').DataTable( {
+        "ajax": 'rc_datatable/senate',
+	 "columns": [
+		{},
+		 {"render": function(data, type, row, meta)
+			{
+			if(type === 'display')
+				{
+				//data = '<a href="' + data + '">' + data + '</a>';
+				//$('#congress_rc_senate_id').val(
+				//console.log('row is '+JSON.stringify(row));
+				var selected_rollcall=row[1];
+				var selected_congress=row[0];
+				var js_to_run="$('#congress_rc_house_id').val("+selected_rollcall+");$('#congress_house_id').val("+selected_congress+");pullCongressHouseSelectionAndUpdateScatterPlot();imposeHouseSeatingChart("+selected_congress+","+selected_rollcall+");"
+				data="<a href=\"javascript:"+js_to_run+";\" >"+data+"</a>";
+				}
+			return data;
+			}
+		},{},{},{},{}
+	]
+    } );
+
+
     </script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
   </body>
