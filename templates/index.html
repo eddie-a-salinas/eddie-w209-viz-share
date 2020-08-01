@@ -210,7 +210,35 @@ Use the search field to the right.  Click the rollcall to load the row into the 
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
 
-
+var setupCongressBiCameralRCSelections=function()
+	{
+	var impose_div_ids=['rollcall_sen_sel_dd_div','rollcall_house_sel_dd_div'];
+	var sel_ids=['congress_rc_senate_id','congress_rc_house_id'];
+	var on_change_names=['onChangeSenateRC','onChangeHouseRC'];
+	var chamber_names=["senate","house"];
+	var min_rc=1;
+	var max_rc=1;
+	for(var r=0;r<cong_min_max_rollnums.length;r++)
+		{
+		var this_rc=parseInt(cong_min_max_rollnums[r][3]);
+		if(this_rc>max_rc)
+			{
+			max_rc=this_rc;
+			}
+		}
+	console.log("max RC across all chambers/congresses is "+max_rc);
+	for(var s=0;s<sel_ids.length;s++)
+		{
+		var selectionHTML="<select  style=\"width: 50px\"   onchange=\""+on_change_names[s]+"()\"  id=\"congress_rc_"+chamber_names[s]+"_id\">\n";
+		for(var rc=min_rc;rc<=max_rc;rc++)
+			{
+			selectionHTML+="<option value=\""+rc+"\">"+rc+"</option>\n";
+			}
+		selectionHTML+="</select>\n";
+		var sel_div=$('#'+impose_div_ids[s]);
+		sel_div.html(selectionHTML);
+		}
+	}
 
 var setupHouseCongressSelections=function()
 	{
@@ -314,7 +342,8 @@ var onChangeHouseCongress=function()
 	{
 	//new congress is selected, update the roll-call list because they change per congress
 	console.log("onChangeHouseCongress called");
-	setupHouseCongressRCSelections();
+	$('#congress_rc_house_id').val(1);
+	//setupHouseCongressRCSelections();
 	pullCongressHouseSelectionAndUpdateScatterPlot();
 	onChangeHouseRC();
 	}
@@ -337,7 +366,7 @@ var pullHouseSelections=function()
 		}
 	var selectedCongress=sel_vals[0];
 	var selectedRC=sel_vals[1];
-	//console.log("Selected congress is "+selectedCongress+" and selected rollcall is "+selectedRC+"");
+	console.log("EDDIE911 Selected HOUSE congress is "+selectedCongress+" and selected HOUSE rollcall is "+selectedRC+"");
 	return [selectedCongress,selectedRC];
 	}
 
@@ -380,11 +409,16 @@ var imposeHouseSeatingChart=function(cong_num,rollnum) {
 
 var pullHouseSelectionsAndUpdateSeating=function()
 	{
-	console.log("pullHouseSelectionsAndUpdateSeating called");
 	var house_selections=pullHouseSelections();
+	var max_rc_val_house_this_congress=getMMRollCallSelectionDDFromGivenCongress(parseInt(house_selections[0]),"House")[1];
+	if(parseInt(house_selections[1])>parseInt(max_rc_val_house_this_congress))
+		{
+		alert('For selected house congress '+house_selections[0]+', max roll-call is '+max_rc_val_house_this_congress+' so using that instead of '+house_selections[1]);
+		house_selections[1]=max_rc_val_house_this_congress;
+		$('#congress_rc_house_id').val(""+max_rc_val_house_this_congress);
+		}
+	console.log("EDDIE : house selections are : "+JSON.stringify(house_selections));
 	imposeHouseSeatingChart(parseInt(house_selections[0]),parseInt(house_selections[1]));
-
-	
 	}
 
 
@@ -392,7 +426,8 @@ var pullHouseSelectionsAndUpdateSeating=function()
 
 		console.log("In html script...");
 		setupHouseCongressSelections();
-		setupHouseCongressRCSelections();
+		setupCongressBiCameralRCSelections();
+		//setupHouseCongressRCSelections();
 		onChangeHouseCongress();
 	installUpdatedSeatLegend("house_seat_legend_div",25);
     </script>
@@ -506,7 +541,8 @@ var onChangeSenateCongress=function()
 	{
 	//new congress is selected, update the roll-call list because they change per congress
 	console.log("onChangeSenateCongress called");
-	setupSenateCongressRCSelections();
+	$('#congress_rc_senate_id').val(1);
+	//setupSenateCongressRCSelections();
 	pullCongressSenateSelectionAndUpdateScatterPlot();
 	onChangeSenateRC();
 	}
@@ -574,6 +610,13 @@ var pullSenateSelectionsAndUpdateSeating=function()
 	{
 	console.log("pullSenateSelectionsAndUpdateSeating called");
 	var senate_selections=pullSenateSelections();
+	var max_rc_val_senate_this_congress=getMMRollCallSelectionDDFromGivenCongress(parseInt(senate_selections[0]),"Senate")[1];
+	if(parseInt(senate_selections[1])>parseInt(max_rc_val_senate_this_congress))
+		{
+		alert('For selected senate congress '+senate_selections[0]+', max roll-call is '+max_rc_val_senate_this_congress+' so using that instead of '+senate_selections[1]);
+		senate_selections[1]=max_rc_val_senate_this_congress;
+		$('#congress_rc_senate_id').val(""+max_rc_val_senate_this_congress);
+		}
 	imposeSenateSeatingChart(parseInt(senate_selections[0]),parseInt(senate_selections[1]));
 
 	
@@ -584,7 +627,8 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
 		console.log("In html script...");
 		setupSenateCongressSelections();
-		setupSenateCongressRCSelections();
+		//setupSenateCongressRCSelections();
+
 		onChangeSenateCongress();
 	installUpdatedSeatLegend("senate_seat_legend_div",25);
 

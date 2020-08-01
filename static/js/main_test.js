@@ -752,7 +752,7 @@ var ordinalNum=function(d)
 var getMMRollCallSelectionDDFromGivenCongress=function(cong_int,chamber)
 	{
 	var fchamber="";
-	if(chamber=="senate")
+	if(chamber.toLowerCase()=="senate")
 		{
 		fchamber="Senate";
 		}
