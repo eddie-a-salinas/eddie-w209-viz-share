@@ -1,6 +1,6 @@
 
 var get_party_colors=function(){
-	var party_colors={'Republican':'red','Democrat':'blue','Independent':'green'};
+	var party_colors={'Republican':'red','Democrat':'blue'};
 	return party_colors;
 	}
 
@@ -35,14 +35,10 @@ var cast_code_to_color=function(cc,party_colors_map,party) {
 	if(cc==1)
 		{
 		//yay
-		var cc1ret="purple";
+		var cc1ret="green";
 		if(party in party_colors_map)
 			{
 			cc1ret=party_colors_map[party];
-			}
-		else
-			{
-			cc1ret="purple";
 			}
 		//console.log("Returning party color : "+cc1ret);
 		return cc1ret;
@@ -52,16 +48,66 @@ var cast_code_to_color=function(cc,party_colors_map,party) {
 		//nay
 		return 'white';
 		}
-	else if(cc==9)
-		{
-		//absent!
-		return 'grey';
-		}
 	else
 		{
-		return 'yellow';
+		//non-yay and non-nay!
+		return 'grey';
 		}
 	}
+
+
+var installUpdatedSeatLegend=function(div_id,svg_dim)
+	{
+	var castCodes=[1,6,-1];
+	var castDescs=["Yay","Nay","Absent/Other (e.g. 'present' or 'announced')"];	
+	var dHTML="";
+	dHTML="<table>";
+	dHTML+="<thead><tr>";
+	for(var cc=0;cc<castDescs.length;cc++)
+		{
+		if(cc==0)
+			{
+			dHTML+="<th>Party</hd>";
+			}
+		dHTML+="<th>"+castDescs[cc]+"</th>";
+		}
+	dHTML+="</thead><tbody>";
+	var partyRowNames=[];
+	var party_colors_map=get_party_colors();
+	Object.keys(party_colors_map).map(function(party)
+		{
+		partyRowNames.push(party);		
+		});
+	partyRowNames.push("Other");
+	//console.log("partyRowNames is "+JSON.stringify(partyRowNames));
+	for(var p=0;p<partyRowNames.length;p++)
+		{
+		dHTML+="<tr><td>"+partyRowNames[p]+"</td>";
+		for(var c=0;c<castCodes.length;c++)
+			{
+			var partyColor=cast_code_to_color(castCodes[c],party_colors_map,partyRowNames[p]);
+			dHTML+="<td>";
+			dHTML+="<svg width="+svg_dim+" height="+svg_dim+">";
+			var partyStroke=partyColor;
+			if(partyRowNames[p]=="Other")
+				{
+				partyStroke="green";
+				}
+			else
+				{
+				partyStroke=party_colors_map[partyRowNames[p]];
+				}
+			
+			dHTML+="<rect x=0 y=0  width="+(svg_dim-0)+" height="+(svg_dim-0)+" style=\"stroke:"+partyStroke+"; stroke-width:4;   fill:"+partyColor+";\" ></rect>";
+			dHTML+="</svg>";			
+			dHTML+="</td>";
+			}
+		dHTML+="</tr>";
+		}
+	dHTML+="</tbody><table>";
+	$('#'+div_id).html(dHTML);
+	}
+
 
 
 var installSeatLegend=function(div_id,svg_dim)
@@ -495,31 +541,91 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		{
 		var vname=d[v]['bioname']+" of "+d[v]['state_abbrev'];
 		var vparty=d[v]['party_name'];
-		/*if(vparty=="Democrat")
-			{
-			vparty="Democrat";
-			}
-		else if(vparty=="Republican")
-			{
-			vparty="Republican";
-			}
-		else
-			{
-			vparty=d[v]
-			}*/
 		voters.push({'name':vname,'party':vparty,'vote':d[v]['cast_code']});
 		}
 	//console.log("Voters are "+JSON.stringify(voters));
+	var vote_filter_func=function(v,cf)
+		{
+		//console.log("A voter if "+JSON.stringify(v));
+		var cc=v['vote'];
+		//console.log("their cast code is "+cc);
+		if(cc==cf)
+			{
+			return true;
+			}
+		return false;
+		}
+
+
+	var yay_voters=voters.filter(function(v) {
+					return vote_filter_func(v,1);
+					});
+	var nay_voters=voters.filter(function(v) {
+					return vote_filter_func(v,6);
+					});
+	//console.log("YAY voters : "+JSON.stringify(yay_voters));
+	var num_yay_voters=yay_voters.length;
+	var num_nay_voters=nay_voters.length;
+	//console.log("Num yay :"+num_yay_voters);
+	//console.log("Num non-yay :"+num_non_nay_voters);
+	var pf_rc_frac=(num_yay_voters/(num_yay_voters+num_nay_voters))*100.0;
+	var pf_fv=Math.ceil(pf_rc_frac);
+	var pf_text="";
+	var pf_sym="";
+	var sym_overlay="";
+	pf_text=" "+pf_fv+"% Yay";
+	var sym_over_color="";
+	if(pf_fv>50)
+		{
+		pf_sym='\u{1F4DC}'; //scroll
+		sym_overlay='\u2714' //checkmark
+		sym_over_color="green";
+		}
+	else
+		{
+		pf_sym='\u{1F4DC}'; //scroll
+		sym_overlay="X"; //X
+		sym_over_color="red";
+		}
+
+
+	
+	
+	
 	var desk_width=getDeskWidth();
 	var seat_info=make_seat_info(desk_width,voters.length);
 	var voters_assigned_seats=assign_seats(seat_info,voters);
-
-	//console.log(JSON.stringify(voters_assigned_seats));
 
 
 	var svg_obj=d3.select("#"+svg_id);
 	var cong_g=svg_obj.append('g')
 		.attr('transform','translate('+trx_x+','+trx_y+') rotate(0)');
+
+
+	//PASS percentage text
+	text_y=40;
+	text_sym_x=0-trx_x/2.25;
+	text_sym_delta=55;
+	cong_g.append("text")
+		.attr("x",text_sym_x+text_sym_delta)
+		.attr("y",text_y)
+		.text(pf_text)
+		.attr("font-size","3em");
+	//symbol text
+	var sym_text_svg_elem=cong_g.append("text")
+		.attr("x",text_sym_x)
+		.attr("y",text_y)
+		.text(pf_sym)
+		.attr("font-size","3em");
+	var bboxGroup = sym_text_svg_elem.node().getBBox(); 
+	//symbol overlay
+	cong_g.append("text")
+		.attr("x",(bboxGroup.x+(bboxGroup.width/4)))
+		.attr("y",bboxGroup.y+bboxGroup.height*0.75)
+		.text(sym_overlay)
+		.attr("fill",sym_over_color)
+		.attr("font-size","3em");
+
 
 
 
@@ -551,14 +657,16 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 		var party_colors=get_party_colors();
 
 
-		the_gs.append('rect')
+		var the_seats=the_gs.append('rect');
+
+		the_seats
 			.attr('stroke-width',2)
 			.attr('stroke',function(d) {
 					if(d['party'] in party_colors)
 						{
 						return party_colors[d['party']];
 						}
-					return 'black';
+					return 'green';
 					})
 			.attr('x',function(d) { return seat_info['data'][d['seat_id']]['rect']['x'];})
 			.attr('y',function(d) { return seat_info['data'][d['seat_id']]['rect']['y'];})
@@ -574,23 +682,34 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 					return color;
 					})
 			.on("mouseenter",function(d,i) {
-					var the_voters_party=d['party'];
-					var the_voters_name=d['name'];
-					var the_vote=parseInt(d['vote']);
-					//return the_voters_name+":"+the_voters_party;
-					the_vote=cast_code_lookup[the_vote];
-					hoverText.text(the_voters_name+":"+the_voters_party+":s"+d['seat_id']+":V="+the_vote);
+
 					//https://stackoverflow.com/questions/1636842/svg-get-text-element-width
 					//https://stackoverflow.com/questions/36540141/why-cant-i-get-the-bounding-box-of-this-d3-js-text
 					var bbox = hoverText.node().getBBox();
 					hoverGroup.selectAll('rect').attr('width',bbox.width+10);
 					//hoverGroup.height=bbox.height;
-					hoverGroup.style("visibility","visible");
+					//hoverGroup.style("visibility","visible");
+					d3.select(this)
+						.attr("stroke-width",4);
 					})
 			.on("mouseout",function() {
 					hoverGroup.style("visibility","hidden");
 					//hoverGroup.selectAll("rect").attr("width",75)
-					});
+					d3.select(this)
+						.attr("stroke-width",2);
+					})
+		the_seats.append("title")
+			.text(function(d,i) {
+				var the_voters_party=d['party'];
+				var the_voters_name=d['name'];
+				var the_vote=parseInt(d['vote']);
+				//return the_voters_name+":"+the_voters_party;
+				the_vote=cast_code_lookup[the_vote];
+				//hoverText.text(the_voters_name+":"+the_voters_party+":s"+d['seat_id']+":V="+the_vote);
+				var tt_text=the_voters_name+"\nParty:  "+the_voters_party.trim()+"\nVote:    "+the_vote.trim()+"\n\Seat:    "+d['seat_id'];
+				return tt_text;
+				});
+			
 
 
 

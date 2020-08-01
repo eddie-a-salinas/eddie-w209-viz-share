@@ -17,10 +17,10 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 
 
 	var yScale=d3.scaleLinear()
-		.domain([0.0,1.0])
+		.domain([0.0,100.0])
 		.range([height-margin.top-margin.bottom,0.0]);
 	var xScale=d3.scaleLinear()
-		.domain([0.0,1.0])
+		.domain([0.0,100.0])
 		.range([0,width-margin.right-margin.left]);
 
 
@@ -39,10 +39,10 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 		//do gridlines
 		line_attr={"stroke":"black",
 			"stroke-dasharray":20};
-		var line_step=0.25;
+		var line_step=25;
 		var x_ticks=[];
 		var y_ticks=[];
-		for(var gx=0.0;gx<=1.0;gx+=line_step)
+		for(var gx=0.0;gx<=100.0;gx+=line_step)
 			{
 			//console.log('ap line gx='+gx);
 			main_g.append("line")
@@ -51,10 +51,10 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 				.attr("x1",xScale(gx))
 				.attr("x2",xScale(gx))
 				.attr("y1",yScale(0.0))
-				.attr("y2",yScale(1.0));
+				.attr("y2",yScale(100.0));
 			x_ticks.push(gx);
 			}
-		for(var gy=0.0;gy<=1.0;gy+=line_step)
+		for(var gy=0.0;gy<=100.0;gy+=line_step)
 			{
 			//console.log('ap line yx='+gy);
 			main_g.append("line")
@@ -63,7 +63,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 				.attr("y1",yScale(gy))
 				.attr("y2",yScale(gy))
 				.attr("x1",xScale(0.0))
-				.attr("x2",xScale(1.0));
+				.attr("x2",xScale(100.0));
 			y_ticks.push(gy);
 			}
 				
@@ -73,17 +73,17 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 		console.log("x/y ticks : "+JSON.stringify(x_ticks)+"/"+JSON.stringify(y_ticks));
 		var x_axis_tx="translate(0,"+(height-margin.top-margin.bottom)+")";
 		var yAxis = d3.axisLeft(yScale)
-			.tickFormat(d3.format(",.2f"))
+			.tickFormat(function(d) { return d + " %"; })
 			.tickValues(y_ticks);
 		main_g.append("g")
 			.call(yAxis);	
 		var xAxis=d3.axisBottom(xScale)
-			.tickFormat(d3.format(",.2f"))
+			.tickFormat(function(d) { return d + " %"; })
 			.tickValues(x_ticks);
 		main_g.append("g")
 			.attr("transform",x_axis_tx)
 			.call(xAxis);
-		var x_axis_text_tx="translate("+xScale(0.36)+",30)";
+		var x_axis_text_tx="translate("+xScale(36)+",30)";
 		//console.log('x axis text tx is '+x_axis_text_tx);
 		main_g.append("g")
 			.attr("transform",x_axis_tx)
@@ -92,7 +92,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 			.append("text")
 			.text("% Republicans Voting Yay");
 		main_g.append("g")
-			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(0.70)+")")
+			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(70)+")")
 			.append("g")
 			.attr("transform","rotate(90)")
 			.append("text")
@@ -100,10 +100,10 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 
 		//bi-partisan "DMZ"
 		//<polygon points="0,100 50,25 50,75 100,0" />
-		var step=0.25;
+		var step=25;
 		var t_bl_step=0.0;
-		var poly_x=[0+t_bl_step , 0+t_bl_step    , 1.0-step , 1.0 , 1.0      , step+t_bl_step ];
-		var poly_y=[0+t_bl_step , step+t_bl_step , 1.0      , 1.0 , 1.0-step , 0.0+t_bl_step  ];
+		var poly_x=[0+t_bl_step , 0+t_bl_step    , 100.0-step , 100.0 , 100.0      , step+t_bl_step ];
+		var poly_y=[0+t_bl_step , step+t_bl_step , 100.0      , 100.0 , 100.0-step , 0.0+t_bl_step  ];
 		var poly_points=[];
 		for(var p=0;p<poly_x.length;p++)
 			{
@@ -117,11 +117,11 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 			.style("opacity",0.75);
 		var dmz_text="Bi-Partisan Zone";
 		main_g.append("text")
-			.attr("x",xScale(1-step-0.02))
-			.attr("y",yScale(1.0+0.01))
+			.attr("x",xScale(100-step-2))
+			.attr("y",yScale(100.0+1.0))
 			.text(dmz_text);
 		main_g.append("g")
-			.attr("transform","translate("+xScale(1.0+0.01)+","+yScale(1.0)+") rotate(90)")
+			.attr("transform","translate("+xScale(100.0+1)+","+yScale(100.0)+") rotate(90)")
 			.append("text")
 			.text(dmz_text);
 
@@ -152,28 +152,14 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 		{
 		elems
 			.on("mouseenter",function(d,i) {
-				console.log("d is "+JSON.stringify(d));
-				hoverGroup.style("visibility","visible");
-				var hoverText=hoverGroup.select("#hovertextid");
-				var disp_Text="#"+d['rc'];
-				if(d['qust'].length>=1)
-					{
-					disp_Text+=" : "+d['qust'];
-					}
-				if(d['desc'].length>=1)
-					{
-					disp_Text+=" : "+d['desc'];
-					}
-				if(disp_Text.length<=5)
-					{
-					disp_Text+=" : "+d['ddesc'];
-					}			
-				//console.log('disp_text is '+disp_Text);
-				var bbox=hoverText.text(disp_Text).nodes()[0].getBBox();
-				hoverGroup.selectAll('rect').attr('width',bbox.width+10);
+				d3.select(this)
+					.attr("r",6);
 				})
 			.on("mouseout",function(d,i) {
 				hoverGroup.style("visibility","hidden");
+				d3.select(this)
+					.attr("fill","gray")
+					.attr("r",4);
 				})
 			.on("click",function(d,i)
 					{
@@ -186,7 +172,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 				if(pk1 in d)
 					{
 					var inx=d[pk1];
-					return xScale(inx);
+					return xScale(inx*100.0);
 					}
 				return 0.0;
 				})
@@ -194,46 +180,22 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 				if(pk2 in d)
 					{
 					var iny=d[pk2];
-					return yScale(iny);
+					return yScale(iny*100.0);
 					}
 				return 0.0;
 				})
 			.attr("r",4)
+			.style("cursor","pointer")
 			.attr("stroke","black")
 			.attr("fill",function(d,i) {
-				//return "yellow";
-				var red_val=Math.ceil(255.0*d['Republican']);
-				var blue_val=Math.ceil(255.0*d['Democrat']);
-				//https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
-				/*var red_hex=red_val.toString(16);
-				if(red_hex.length==1)
-					{
-					red_hex="0"+red_hex;
-					}
-				var blue_hex=blue_val.toString(16);
-				if(blue_hex.length==1)
-					{
-					blue_hex="0"+blue_hex;
-					}
-				var green_hex="00";
-				var ret_col="#"+red_hex+green_hex+blue_hex;*/
-				if(d['Republican']>d['Democrat'])
-					{
-					return "red";
-					}
-				else if(d['Democrat']>d['Republican'])
-					{
-					return "blue";
-					}
-				else
-					{
-					return 'purple';
-					}
-				return ret_col;
-				})
-			.attr("note",function(d,i) {
-					return JSON.stringify(d);
-					});
+					return "gray";
+				});
+		elems.append("title").text(function(d,i) {
+				//return JSON.stringify(d);
+				var rollcall=d['rc']
+				return "Roll Call "+rollcall;
+				});
+
 
 
 		}

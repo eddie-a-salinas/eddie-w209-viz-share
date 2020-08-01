@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <meta charset="UTF-8" />
     <title>Congress Voting Visualization</title>
-    <link rel="stylesheet"type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   </head>
-  <body>
+  <body >
+	<!--<div style="z-index: 99; position: fixed; left: 10px; top: 10px; ">DIV</div>-->
 	<div align="center">
-		<img width="75%" height="auto" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}">
+		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}">
 		<hr>
 		<div>
-			<table>
+			<table style="margin-left: auto; margin-right: auto; table-layout: fixed;">
 				<thead>
 				</thead>
 				<tbody>
 					<tr>
-						<td><div>116<br>Congresses</div></td>
-						<td>12,423<br>Roll Calls</td>
-						<td>183,586<br>Votes</td>
+						<td style="width=30%; ">79<br>Congresses</td>
+						<td style="width=30%;">83,117<br>Roll Calls</td>
+						<td style="width=30%;">183,586<br>Votes</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+<hr>
+
 
 <h2>Broad Story</h2>
 <p>In his famous 1858 Republican convention speech, President Lincoln warned that "A house divided against itself cannot
@@ -37,11 +42,25 @@ through the channels of party.
 that administration within the context of the political party. To that end, you can begin your exploration in Congress and
 navigate through the Senate or the House of Representatives, examining bill proposals and passages over time and
 drilling in on specific votes and the degree to which they reflect the political factionalism warned about in these speeches.
+<hr>
+<table  width=100%><thead><tr><td colspan=2><h3>Definitions</h3></td></tr></thead>
+<tbody>
+	<tr><td><h4><a href="https://www.senate.gov/reference/glossary_term/roll_call_vote.htm">Roll Call</a></h4></td><td style="text-align:left;" >An item (e.g. bill, resolution, official confirmation, etc.) over which congress votes.</td></tr>
+	<tr><td><h4>Congress </h4></td><td style="text-align:left;" >A time-series of meetings (roll-calls), each lasting about 1-2 years, grouped into "sessions" covering both the <em>House</em> and <em>Senate</em>.  For this project all sessions for a given congress have been merged into a single session.  This imposes a strictly serial and increasing series of roll calls (i.e. 5,6,7,8,9,10 for 2 sessions instead of 5,6,7,1,2,3 for 2 sessions)</td></tr>
+</tbody></table>
+
 <hr>	
 <table>
 	<thead>
 		<tr>
 			<td colspan=3>
+				<!--<div style="z-index: 0; position: absolute; left: 10px; top: 10px; background-color:red;">
+					<svg>
+						<g transform="translate(20,50) rotate(-90) ">
+							<text>HELLO</text>
+						</g>
+					</svg>
+				</div> -->
 				<h1>Senate Dashboard</h1>
 			</td>
 		<td>
@@ -68,28 +87,31 @@ drilling in on specific votes and the degree to which they reflect the political
 				<div id="scatter_plot_senate_header_div"></div>
 				<svg id="scatter_plot_senate" width=500 height=500  overflow="visible"></svg>
 			</td>
-			<td>
-				<table style="display:block;" >
-					<thead>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Congress</td><td><div id="cong_sen_sel_dd_div">drop-down</div></td>
-						<tr/>
-						<tr>
-							<td>Roll Call</td><td><div id="rollcall_sen_sel_dd_div">drop-down</div></td>
-						</tr>						
-					</tbody>
-				</table>
+			<td style="vertical-align:top;" >
+				<div height="10%">
+					<table style="background-color:lightsteelblue;" >
+						<thead>
+						</thead>
+						<tbody  >
+							<tr>
+								<td>Congress</td><td><div id="cong_sen_sel_dd_div">drop-down</div></td>
+							<tr/>
+							<tr>
+								<td>Roll Call</td><td><div id="rollcall_sen_sel_dd_div">drop-down</div></td>
+							</tr>						
+						</tbody>
+					</table>
+				</div>
 			</td>
 			<td>
 
 				<!-- seating chart -->
-				<div id="senate_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<div id="senate_seatvote_detail_div"  class="senate_house_rc_detail"></div>
 				<table>
 					<tr>
-					<td><svg id="senate_seating_svg_id" width=400 height=460   overflow="visible" ></svg></td>
-					<td><div style="text-align: left; float: left;" id="senate_seat_legend_div">BLAH</div></td>
+						<td><svg id="senate_seating_svg_id" width=400 height=325   overflow="visible" ></svg>
+						<div  style="vertical-align:top;" id="senate_seat_legend_div">BLAH</div>
+						</td>
 					</tr>
 				</table>		
 				
@@ -98,6 +120,17 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 	</tbody>
 </table>
+<!-- SENATE DATATABLE -->
+<div align="center">
+<h3 align="center">Senate RollCall Search Table</h3>
+Use the search field to the right.  Click the rollcall to load the row into the visualizations
+</div>
+<table border=1 id="senate_datatable" class="display" width="100%" style="width:100%">
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> <th>% Yay</th>  </tr> </thead> 
+	<tbody></tbody>
+</table>
+
+
 <!------------HOUSE---------------->
 <hr>	
 <table>
@@ -130,28 +163,32 @@ drilling in on specific votes and the degree to which they reflect the political
 				<div id="scatter_plot_house_header_div"></div>
 				<svg id="scatter_plot_house" width=500 height=500  overflow="visible"></svg>
 			</td>
-			<td>
-				<table style="display:block;" >
-					<thead>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Congress</td><td><div id="cong_house_sel_dd_div">drop-down</div></td>
-						<tr/>
-						<tr>
-							<td>Roll Call</td><td><div id="rollcall_house_sel_dd_div">drop-down</div></td>
-						</tr>						
-					</tbody>
-				</table>
+			<td style="vertical-align:top;">
+				<div height="10%">
+					<table style="background-color:lightsteelblue;" " >
+						<thead>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Congress</td><td><div id="cong_house_sel_dd_div">drop-down</div></td>
+							<tr/>
+							<tr>
+								<td>Roll Call</td><td><div id="rollcall_house_sel_dd_div">drop-down</div></td>
+							</tr>						
+						</tbody>
+					</table>
+				</div>
 			</td>
 			<td>
 
 				<!-- seating chart -->
-				<div id="house_seatvote_detail_div" style=" display: table-cell; vertical-align: bottom; height:12em; max-height:12em; width:750px; max-width:750px; min-width:750px; "  ></div>
+				<div id="house_seatvote_detail_div" class="senate_house_rc_detail"></div>
 				<table>
 					<tr>
-					<td><svg id="house_seating_svg_id" width=750 height=660   overflow="visible" ></svg></td>
-					<td><div style="text-align: left; float: left;" id="house_seat_legend_div">BLAH</div></td>
+					<td>
+						<svg id="house_seating_svg_id" width=750 height=535 overflow="visible" ></svg>
+						<div style="vertical-align:top;"  id="house_seat_legend_div">BLAH</div>
+					</td>
 					</tr>
 				</table>		
 				
@@ -160,11 +197,22 @@ drilling in on specific votes and the degree to which they reflect the political
 		</tr>
 	</tbody>
 </table>
+<!-- SENATE DATATABLE -->
+<div align="center">
+<h3 align="center">House RollCall Search Table</h3>
+Use the search field to the right.  Click the rollcall to load the row into the visualizations
+</div>
+<table border=1 id="house_datatable" class="display" width="100%" style="width:100%">
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th>  <th>% Yay</th> </tr> </thead> 
+	<tbody></tbody>
+</table>
+	<svg width=10 height=400></svg>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
     <script src="{{ url_for('static', filename='js/scatter_plot.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/utils_test.js') }}" ></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
 
 
@@ -242,8 +290,19 @@ var pullCongressHouseSelectionAndUpdateScatterPlot=function()
 			alert("Error in trying to set house roll-call value!");
 			}		
 		}
-	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
-	$('#scatter_plot_house_header_div').html('<h3>'+title_text+'</h3>');
+	var cong_to_year_dict=get_cong_to_year_map();
+	var ann_text="";
+	if(cong+"" in cong_to_year_dict)
+		{
+		var year_range=cong_to_year_dict[""+cong];
+		ann_text="From "+year_range.join(" to ");
+		}
+	var title_text="<h3>Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress in the House</h3>";
+	if(ann_text.length>1)
+		{
+		title_text+=ann_text;
+		}
+	$('#scatter_plot_house_header_div').html(title_text);
 	issueScatterPlotUpdate("scatter_plot_house",cong,"House",rc_callback);
 	}
 
@@ -313,18 +372,9 @@ var imposeHouseSeatingChart=function(cong_num,rollnum) {
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x!=null;
-										});
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x.length>0
-										});
-					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
-					if(post_det_arr.length>0)
-						{
-						post_text=post_det_arr.join("<br>");
-						}
-					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br></h3>"+post_text;
+					post_det_arr=post_det_arr.filter(function(d) { if(d.length>0) { return true; } else { return  false;}});
+					post_text=post_det_arr.join("<br>");
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the House<br>Held "+detail['rollcall_date']+"</h3>"+post_text;
 					$('#house_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
 				}
 			
@@ -349,7 +399,7 @@ var pullHouseSelectionsAndUpdateSeating=function()
 		setupHouseCongressSelections();
 		setupHouseCongressRCSelections();
 		onChangeHouseCongress();
-	installSeatLegend("house_seat_legend_div",50);
+	installUpdatedSeatLegend("house_seat_legend_div",25);
     </script>
 
 
@@ -432,8 +482,19 @@ var pullCongressSenateSelectionAndUpdateScatterPlot=function()
 			alert("Error in trying to set roll-call value!");
 			}		
 		}
-	var title_text="Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress";
-	$('#scatter_plot_senate_header_div').html('<h3>'+title_text+'</h3>');
+	var cong_to_year_dict=get_cong_to_year_map();
+	var ann_text="";
+	if(cong+"" in cong_to_year_dict)
+		{
+		var year_range=cong_to_year_dict[""+cong];
+		ann_text="From "+year_range.join(" to ");
+		}
+	var title_text="<h3>Partisanship Percentages among the Rollcalls of the<br>"+ordinalNum(cong)+" Congress in the Senate</h3>";
+	if(ann_text.length>1)
+		{
+		title_text+=ann_text;
+		}
+	$('#scatter_plot_senate_header_div').html(title_text);
 	issueScatterPlotUpdate("scatter_plot_senate",cong,"Senate",rc_callback);
 	}
 
@@ -503,19 +564,10 @@ var imposeSenateSeatingChart=function(cong_num,rollnum) {
 					//console.log("DETAIL is "+JSON.stringify(detail,null,4));
 					var post_text="Vote name unavailable !";
 					post_det_arr=[detail['vote_question'],detail['vote_description'],detail['vote_detail_description']];
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x!=null;
-										});
-					post_det_arr=post_det_arr.filter(function(x) {
-										return x.length>0
-										});
-					post_det_arr=post_det_arr.filter(function(x) { if(x.length<=500) { return true; } else { return false;}});
-					if(post_det_arr.length>0)
-						{
-						post_text=post_det_arr.join("<br>");
-						}
-					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br></h3>"+post_text;
-					$('#senate_seatvote_detail_div').html("<h3>"+post_text+"</h3>");
+					post_det_arr=post_det_arr.filter(function(d) { if(d.length>0) { return true; } else { return false;}});
+					post_text=post_det_arr.join("<br>");
+					post_text="<h3>"+ordinalNum(cong_num)+" Congress<br>Roll Call #"+rollnum+" in the Senate<br>Held "+detail['rollcall_date']+"</h3>"+post_text;
+					$('#senate_seatvote_detail_div').html(post_text);
 				}
 			
 			});
@@ -539,7 +591,59 @@ var pullSenateSelectionsAndUpdateSeating=function()
 		setupSenateCongressSelections();
 		setupSenateCongressRCSelections();
 		onChangeSenateCongress();
-	installSeatLegend("senate_seat_legend_div",50);
+	installUpdatedSeatLegend("senate_seat_legend_div",25);
+
+
+
+//SENATE DATATABLE
+    $('#senate_datatable').DataTable( {
+	"dom": '<"top"rflp>t<"bottom"i><"clear">',
+        "ajax": 'rc_datatable/senate',
+	 "columns": [
+		{},
+		 {"render": function(data, type, row, meta)
+			{
+			if(type === 'display')
+				{
+				//data = '<a href="' + data + '">' + data + '</a>';
+				//$('#congress_rc_senate_id').val(
+				//console.log('row is '+JSON.stringify(row));
+				var selected_rollcall=row[1];
+				var selected_congress=row[0];
+				var js_to_run="$('#congress_rc_senate_id').val("+selected_rollcall+");$('#congress_senate_id').val("+selected_congress+");pullCongressSenateSelectionAndUpdateScatterPlot();imposeSenateSeatingChart("+selected_congress+","+selected_rollcall+");"
+				data="<a href=\"javascript:"+js_to_run+";\" >"+data+"</a>";
+				}
+			return data;
+			}
+		},{},{},{},{},{}
+	]
+    } );
+
+//HOUSE DATATABLE
+    $('#house_datatable').DataTable( {
+	"dom": '<"top"rflp>t<"bottom"i><"clear">',
+        "ajax": 'rc_datatable/house',
+	 "columns": [
+		{},
+		 {"render": function(data, type, row, meta)
+			{
+			if(type === 'display')
+				{
+				//data = '<a href="' + data + '">' + data + '</a>';
+				//$('#congress_rc_senate_id').val(
+				//console.log('row is '+JSON.stringify(row));
+				var selected_rollcall=row[1];
+				var selected_congress=row[0];
+				var js_to_run="$('#congress_rc_house_id').val("+selected_rollcall+");$('#congress_house_id').val("+selected_congress+");pullCongressHouseSelectionAndUpdateScatterPlot();imposeHouseSeatingChart("+selected_congress+","+selected_rollcall+");"
+				data="<a href=\"javascript:"+js_to_run+";\" >"+data+"</a>";
+				}
+			return data;
+			}
+		},{},{},{},{},{}
+	]
+    } );
+
+
     </script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
   </body>

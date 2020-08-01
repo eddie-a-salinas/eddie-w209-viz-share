@@ -112,6 +112,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .attr("y", function (d) { return  y_dem(d.Dem_Votes); } )
     .attr("height", function (d) { return y_dem(0) - y_dem(d.Dem_Votes); } )
     .attr("width",   x_congress.bandwidth() )
+    .style("cursor","pointer")
     .style("fill", "blue") //.style("fill", "teal") //#69b3a2
     //.style("opacity", 0.65)
     .on("mouseover", function() {        
@@ -132,8 +133,15 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
          })
      .append("title")    
      .text(function(d) { 
-          return "Congress Number: " + d.Congress_number  + "\nDemocrat Votes: " + parseInt(d.Dem_Votes) + 
-                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes);   
+	var the_cong_to_year_map=get_cong_to_year_map();
+	  var the_year_range_arr=the_cong_to_year_map[d['Congress_number']];
+	  the_year_range_arr=the_year_range_arr.map(function(x) { 
+		var xp=x.split("-");
+		return xp[0];
+		});
+	  the_year_range_text=the_year_range_arr.join(" - ");
+          return "Congress Number: " + d.Congress_number + "\nDemocrat Votes: " + parseInt(d.Dem_Votes) + 
+                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes) + "\nYears : "+the_year_range_text; 
       });                       
 
   var marks = gDrawing.selectAll(".mark").data(myData);
@@ -150,6 +158,7 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
     .attr("height", function (d) { return y_dem(0) - y_dem(d.Rep_Votes); } )
     .attr("width",   x_congress.bandwidth() )
     .style("fill", "Red") //.style("fill", "teal") //#69b3a2
+    .style("cursor","pointer")
     //.style("opacity", 0.65)
     .on("click",function(d,i) {
 		//console.log("need to call callback with d="+JSON.stringify(d,null,4));
@@ -168,8 +177,15 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
          })
      .append("title")    
      .text(function(d) { 
+	var the_cong_to_year_map=get_cong_to_year_map();
+	  var the_year_range_arr=the_cong_to_year_map[d['Congress_number']];
+	  the_year_range_arr=the_year_range_arr.map(function(x) { 
+		var xp=x.split("-");
+		return xp[0];
+		});
+	  the_year_range_text=the_year_range_arr.join(" - ");
           return "Congress Number: " + d.Congress_number + "\nDemocrat Votes: " + parseInt(d.Dem_Votes) + 
-                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes);   
+                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes) + "\nYears : "+the_year_range_text;
       });                       
 
 
@@ -278,6 +294,7 @@ var marks = gDrawing.selectAll("path.pt").data(data_rollcalls);
        .attr("transform", function(d, i) {
               return "translate(" + x_congress_year(congress_years_map[i].Year) + "," + y_rollcalls(d.Total_Roll_Calls) + ")";})
        .attr("fill", "grey")
+       .style("cursor","pointer")
        .attr("stroke", "black") 
        .on("mouseover", function(d, i) {        
                d3.select(this)

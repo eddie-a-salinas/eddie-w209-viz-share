@@ -52,3 +52,15 @@ h2 {
     stroke: #ff9999;
     stroke-width: 3;
 }
+
+
+div.senate_house_rc_detail {
+	overflow-y:auto; 
+	vertical-align: bottom; 
+	height:12em; 
+	max-height:12em; 
+	width:750px; 
+	max-width:750px; 
+	min-width:750px;
+	}
+
