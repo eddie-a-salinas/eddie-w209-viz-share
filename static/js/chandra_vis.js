@@ -133,8 +133,15 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
          })
      .append("title")    
      .text(function(d) { 
-          return "Congress Number: " + d.Congress_number  + "\nDemocrat Votes: " + parseInt(d.Dem_Votes) + 
-                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes);   
+	var the_cong_to_year_map=get_cong_to_year_map();
+	  var the_year_range_arr=the_cong_to_year_map[d['Congress_number']];
+	  the_year_range_arr=the_year_range_arr.map(function(x) { 
+		var xp=x.split("-");
+		return xp[0];
+		});
+	  the_year_range_text=the_year_range_arr.join(" - ");
+          return "Congress Number: " + d.Congress_number + "\nDemocrat Votes: " + parseInt(d.Dem_Votes) + 
+                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes) + "\nYears : "+the_year_range_text; 
       });                       
 
   var marks = gDrawing.selectAll(".mark").data(myData);
@@ -170,8 +177,15 @@ var data_vote = data //[]; // GroupBy from https://stackoverflow.com/questions/2
          })
      .append("title")    
      .text(function(d) { 
+	var the_cong_to_year_map=get_cong_to_year_map();
+	  var the_year_range_arr=the_cong_to_year_map[d['Congress_number']];
+	  the_year_range_arr=the_year_range_arr.map(function(x) { 
+		var xp=x.split("-");
+		return xp[0];
+		});
+	  the_year_range_text=the_year_range_arr.join(" - ");
           return "Congress Number: " + d.Congress_number + "\nDemocrat Votes: " + parseInt(d.Dem_Votes) + 
-                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes);   
+                                                           "\nRepublican Votes: " + parseInt(d.Rep_Votes) + "\nYears : "+the_year_range_text;
       });                       
 
 
