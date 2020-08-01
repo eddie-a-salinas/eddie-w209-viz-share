@@ -91,7 +91,7 @@ def getMemberVote(congress,rollcall,chamber):
 @app.route('/pct_party/<int:congress>/<string:chamber>')
 def getPctPartyCache(congress,chamber):
 	c_int=int(congress)
-	f_base="data/memo_party/wdpp."+chamber+"."+str(c_int).zfill(3)+".json"
+	f_base=APP_FOLDER+"/data/memo_party/wdpp."+chamber+"."+str(c_int).zfill(3)+".json"
 	if(os.path.exists(f_base)):
 		#print("f_base is "+str(f_base))
 		return send_file(f_base)
@@ -101,7 +101,7 @@ def getPctPartyCache(congress,chamber):
 
 @app.route('/data/<data_file>')
 def returnDataFile(data_file):
-	dpath="data/"+data_file
+	dpath=APP_FOLDER+"/data/"+data_file
 	if(os.path.exists(dpath)):
 		return send_file(dpath)
 	else:
@@ -129,7 +129,7 @@ def getrcdatatable(chamber):
 	mp_files=list()
 	for cn in range(min_congress,max_congress+1):
 		#mp_file="data/memo_party/wdpp.Senate.116.json
-		mp_file="data/memo_party/wdpp."+chamber.capitalize()+"."+str(cn).zfill(3)+".json"
+		mp_file=APP_FOLDER+"/data/memo_party/wdpp."+chamber.capitalize()+"."+str(cn).zfill(3)+".json"
 		mp_files.append(mp_file)
 	data_arr=list()
 	for mp_file in mp_files:
@@ -176,7 +176,7 @@ def getrcdatatable(chamber):
 @app.route('/rc_detail/<int:congress>/<int:rcnum>/<chamber>')
 def getRollCallDetail(congress,rcnum,chamber):
     c_int=int(congress)
-    f_base="data/memo_party/wdpp."+chamber.capitalize()+"."+str(c_int).zfill(3)+".json"
+    f_base=APP_FOLDER+"/data/memo_party/wdpp."+chamber.capitalize()+"."+str(c_int).zfill(3)+".json"
     if(os.path.exists(f_base)):
         #print("f_base is "+str(f_base))
         #return send_file(f_base)
