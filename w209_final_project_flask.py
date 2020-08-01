@@ -158,10 +158,7 @@ def getrcdatatable(chamber):
 				temp_arr=list()
 				temp_arr.append(getCongNumFromMemoFile(os.path.basename(mp_file)))
 				temp_arr.append(rcdata[rci]['rollcall'])
-				ymd=rcdata[rci]['rollcall_date'].split('-')
-				temp_arr.append(ymd[1])#m
-				temp_arr.append(ymd[2])#d
-				temp_arr.append(ymd[0])#y
+				temp_arr.append(rcdata[rci]['rollcall_date'])
 				nice_desc=[rcdata[rci]['vote_question'],rcdata[rci]['vote_description'],rcdata[rci]['vote_detail_description']]
 				nice_desc=filter(lambda x: len(str(x))>=2,nice_desc)
 				temp_arr.append(" : ".join(nice_desc))

@@ -126,7 +126,7 @@ drilling in on specific votes and the degree to which they reflect the political
 Use the search field to the right.  Click the rollcall to load the row into the visualizations
 </div>
 <table border=1 id="senate_datatable" class="display" width="100%" style="width:100%">
-	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th> <th>% Yay</th>  </tr> </thead> 
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>YYYY-MM-DD</th>  <th>Description</th> <th>% Yay</th>  </tr> </thead> 
 	<tbody></tbody>
 </table>
 
@@ -203,7 +203,7 @@ Use the search field to the right.  Click the rollcall to load the row into the 
 Use the search field to the right.  Click the rollcall to load the row into the visualizations
 </div>
 <table border=1 id="house_datatable" class="display" width="100%" style="width:100%">
-	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>Month</th> <th>Day</th> <th>Year</th>  <th>Description</th>  <th>% Yay</th> </tr> </thead> 
+	<thead> <tr> <th>Congress</th>  <th>Roll Call</th> <th>YYYY-MM-DD</th>  <th>Description</th>  <th>% Yay</th> </tr> </thead> 
 	<tbody></tbody>
 </table>
 	<svg width=10 height=400></svg>
@@ -615,7 +615,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 				}
 			return data;
 			}
-		},{},{},{},{},{}
+		},{},{},{}
 	]
     } );
 
@@ -639,7 +639,7 @@ var pullSenateSelectionsAndUpdateSeating=function()
 				}
 			return data;
 			}
-		},{},{},{},{},{}
+		},{},{},{}
 	]
     } );
 
