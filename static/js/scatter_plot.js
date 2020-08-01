@@ -185,6 +185,7 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 				return 0.0;
 				})
 			.attr("r",4)
+			.style("cursor","pointer")
 			.attr("stroke","black")
 			.attr("fill",function(d,i) {
 					return "gray";
