@@ -59,7 +59,7 @@ var cast_code_to_color=function(cc,party_colors_map,party) {
 var installUpdatedSeatLegend=function(div_id,svg_dim)
 	{
 	var castCodes=[1,6,-1];
-	var castDescs=["Yay","Nay","Absent/Other (e.g. 'present' or 'announced')"];	
+	var castDescs=["Yea","Nay","Absent/Other (e.g. 'present' or 'announced')"];	
 	var dHTML="";
 	dHTML="<table>";
 	dHTML+="<thead><tr>";
@@ -115,7 +115,7 @@ var installSeatLegend=function(div_id,svg_dim)
 	console.log("start installSeatLegend");
 	var parties=["Democrat"];
 	var castCodes=[1,6,9,-1];
-	var castDescs=["Yay","Nay","Absent","Other (e.g. 'present' or 'announced')"];
+	var castDescs=["Yea","Nay","Absent","Other (e.g. 'present' or 'announced')"];
 	var table_html="<table><thead></thead>";
 	for(var c=0;c<castCodes.length;c++)
 		{
@@ -573,7 +573,7 @@ var update_seat_svg=function(svg_id,data_arr,trx_x,trx_y) {
 	var pf_text="";
 	var pf_sym="";
 	var sym_overlay="";
-	pf_text=" "+pf_fv+"% Yay";
+	pf_text=" "+pf_fv+"% Yea";
 	var sym_over_color="";
 	if(pf_fv>50)
 		{
