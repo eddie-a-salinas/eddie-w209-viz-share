@@ -90,13 +90,13 @@ function svgScatterDraw(the_data,pk1,pk2,ftidx,rc_callback)
 			.append("g")
 			.attr("transform",x_axis_text_tx)
 			.append("text")
-			.text("% Republicans Voting Yay");
+			.text("% Republicans Voting Yea");
 		main_g.append("g")
 			.attr("transform","translate("+(-(margin.left/1.0))+","+yScale(70)+")")
 			.append("g")
 			.attr("transform","rotate(90)")
 			.append("text")
-			.text("% Democrats Voting Yay");
+			.text("% Democrats Voting Yea");
 
 		//bi-partisan "DMZ"
 		//<polygon points="0,100 50,25 50,75 100,0" />
