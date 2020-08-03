@@ -11,13 +11,39 @@
   <body >
 	<!--<div style="z-index: 99; position: fixed; left: 10px; top: 10px; ">DIV</div>-->
 	<div align="center">
-		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}">
+
+
+		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}" style="background:transparent;">
+		
 		<hr>
+		<table style="margin-left: auto; margin-right: auto; table-layout: fixed;">
+				<thead>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="width=30%;">
+							<a href="#senate_dashboard">Go to Senate Dashboard</a>
+						</td>
+
+						<td style="width=30%;">
+							<h1> Visual Representation -  </h1>
+							<h2> A Story Told by the Congressional Voting</h2>
+						</td>
+						<td style="width=30%;">
+							<a href="#house_dashboard">Go to House Dashboard</a>
+						</td>
+						
+					</tr>
+					
+				</tbody>
+			</table>
 		<div>
+
 			<table style="margin-left: auto; margin-right: auto; table-layout: fixed;">
 				<thead>
 				</thead>
 				<tbody>
+					
 					<tr>
 						<td style="width=30%; ">79<br>Congresses</td>
 						<td style="width=30%;">83,117<br>Roll Calls</td>
@@ -43,7 +69,7 @@ that administration within the context of the political party. To that end, you 
 navigate through the Senate or the House of Representatives, examining bill proposals and passages over time and
 drilling in on specific votes and the degree to which they reflect the political factionalism warned about in these speeches.
 <hr>
-<table  width=100%><thead><tr><td colspan=2><h3>Definitions</h3></td></tr></thead>
+<table align="center" width=100%><thead><tr><td colspan=2><h3>Definitions</h3></td></tr></thead>
 <tbody>
 	<tr><td><h4><a href="https://www.senate.gov/reference/glossary_term/roll_call_vote.htm">Roll Call</a></h4></td><td style="text-align:left;" >An item (e.g. bill, resolution, official confirmation, etc.) over which congress votes.</td></tr>
 	<tr><td><h4>Congress </h4></td><td style="text-align:left;" >A time-series of meetings (roll-calls), each lasting about 1-2 years, grouped into "sessions" covering both the <em>House</em> and <em>Senate</em>.  For this project all sessions for a given congress have been merged into a single session.  This imposes a strictly serial and increasing series of roll calls (i.e. 5,6,7,8,9,10 for 2 sessions instead of 5,6,7,1,2,3 for 2 sessions)</td></tr>
@@ -54,7 +80,9 @@ drilling in on specific votes and the degree to which they reflect the political
 	<thead>
 		<tr>
 			<td colspan=3>
-				<h1>Senate Dashboard</h1>
+				<a id="senate_dashboard">
+					<h1>Senate Dashboard</h1>
+				</a>
 				<svg width=1 height=1 overflow="visible" style="float:left;"><text x=0 style="writing-mode: vertical-rl; text-orientation: upright;" font-size="2em" fill="steelblue">Senate Senate Senate</text></svg>
 			</td>
 		</tr>
@@ -131,7 +159,10 @@ Use the search field to the right.  Click the rollcall to load the row into the 
 	<thead>
 		<tr>
 			<td colspan=3>
-				<h1>House Dashboard</h1>
+				<a id="house_dashboard">
+					<h1>House Dashboard</h1>
+				</a>
+				
 				<svg width=1 height=1 overflow="visible" style="float:left;"><text x=0 style="writing-mode: vertical-rl; text-orientation: upright;" font-size="2em" fill="steelblue">House House House House House</text></svg>
 			</td>
 		</tr>
@@ -160,7 +191,7 @@ Use the search field to the right.  Click the rollcall to load the row into the 
 			</td>
 			<td style="vertical-align:top;">
 				<div height="10%">
-					<table style="background-color:lightsteelblue;" " >
+					<table style="background-color:lightsteelblue;" >
 						<thead>
 						</thead>
 						<tbody>
@@ -685,5 +716,12 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
     </script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
+    <footer class="copyright">
+    <div>
+        All copy rights and credits of the data belong to the original creators. <br> This site is built solely for academic purposes. Related course: Data Visualization, MIDS program, UC Berkeley. <br>
+        Sources: https://voteview.com, https://www.senate.gov, https://www.congress.gov <br>
+        Team member: Edward Salinas, Jason K. Moore, Chandra Shekar Bikkanur, Junjie Ma <br>
+    </div>
+  </footer>
   </body>
 </html>
