@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -8,13 +9,23 @@
     <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   </head>
+
   <body >
 	<!--<div style="z-index: 99; position: fixed; left: 10px; top: 10px; ">DIV</div>-->
-	<div align="center">
 
 
-		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}" style="background:transparent;">
-		
+  	<div class="navbar">
+		 <a class="active" href="#home">Home</a>
+		 <a href="#senate_dashboard">Senate Dashboard</a>
+		 <a href="#house_dashboard">House Dashboard</a>
+		 <a href="#about">About</a>
+	</div>
+
+	<div class ="main" align="center">
+
+
+		<img  width="30%" height="30%" src="{{ url_for('static', filename='images/capitol_rainbow_pseats.png')  }}" style="background:transparent;margin-top: 30px">
+
 		<hr>
 		<table style="margin-left: auto; margin-right: auto; table-layout: fixed;">
 				<thead>
@@ -22,15 +33,17 @@
 				<tbody>
 					<tr>
 						<td style="width=30%;">
-							<a href="#senate_dashboard">Go to Senate Dashboard</a>
+							<!-- <a href="#senate_dashboard">Go to Senate Dashboard</a> -->
 						</td>
 
 						<td style="width=30%;">
-							<h1> Visual Representation -  </h1>
+								<a id="home">
+									<h1> Visual Representation </h1>
+								</a>
 							<h2> A Story Told by the Congressional Voting</h2>
 						</td>
 						<td style="width=30%;">
-							<a href="#house_dashboard">Go to House Dashboard</a>
+							<!-- <a href="#house_dashboard">Go to House Dashboard</a> -->
 						</td>
 						
 					</tr>
@@ -60,14 +73,23 @@
 <p>In his famous 1858 Republican convention speech, President Lincoln warned that "A house divided against itself cannot
 stand." His biblically inspired expression echoed George Washington's warning about "the baneful effects of the spirit of
 party." President Washington called for its restraint, lamenting of the party, that:
+</p>
 <p>It serves always to distract the public councils and enfeeble the public administration. It agitates the community with
 ill-founded jealousies and false alarms, kindles the animosity of one part against another, foments occasionally riot and
 insurrection. It opens the door to foreign influence and corruption, which find a facilitated access to the government itself
 through the channels of party.
+</p>
 <p>Our intent with this website is to let you explore the administration of the US Government while providing you tools view
 that administration within the context of the political party. To that end, you can begin your exploration in Congress and
 navigate through the Senate or the House of Representatives, examining bill proposals and passages over time and
 drilling in on specific votes and the degree to which they reflect the political factionalism warned about in these speeches.
+</p>
+<p>That being said, any congress member who is interested in designing a bill, or historians who may be interested in finding 
+historical trails among the millions of past congressional votes are welcome to use our tools.
+</p>
+<p>
+You can also find a short instruction of how each visualization works at this <a href="https://docs.google.com/presentation/d/1GU23LYKsEWXWi3UJ5kPmaSwA07Id3zqnJJ7d_-ncQWw/edit?usp=sharing">link</a>
+</p>
 <hr>
 <table align="center" width=100%><thead><tr><td colspan=2><h3>Definitions</h3></td></tr></thead>
 <tbody>
@@ -716,12 +738,16 @@ var pullSenateSelectionsAndUpdateSeating=function()
 
     </script>
     <script src="{{ url_for('static', filename='js/chandra_vis.js') }}"></script>
+    <a id="about">
+
+
     <footer class="copyright">
     <div>
         All copy rights and credits of the data belong to the original creators. <br> This site is built solely for academic purposes. Related course: Data Visualization, MIDS program, UC Berkeley. <br>
         Sources: https://voteview.com, https://www.senate.gov, https://www.congress.gov <br>
         Team member: Edward Salinas, Jason K. Moore, Chandra Shekar Bikkanur, Junjie Ma <br>
     </div>
+	</a>
   </footer>
   </body>
 </html>
