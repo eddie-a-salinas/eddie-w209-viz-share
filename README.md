@@ -1,7 +1,8 @@
-# w209-su2020-cybersec
-w209-su-cybersec
+# Congressional Data Visualization
 
-## To replicate
+A congressional data visualization dashboard.
+
+## To replicate and "stand-up" a version of the site, follow these steps.  
 
 1.  Clone this repo
 
