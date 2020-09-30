@@ -2,6 +2,7 @@
 
 A congressional data visualization dashboard.
 <br>
+You can also find a short instruction of how each visualization works at this <a href="https://docs.google.com/presentation/d/1bR5qPuzfQ4R6J_E5MLB3I5vygE9PPo9v0KV_fM_3_hU/edit?usp=sharing">link</a>
 <div>
 <img src="https://raw.githubusercontent.com/eddie-a-salinas/eddie-w209-viz-share/master/static/images/capitol_rainbow_pseats.png" align="center" height="200" width="300" ><br></div>
 <hr>
