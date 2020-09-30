@@ -1,7 +1,7 @@
 # Congressional Data Visualization
 
 A congressional data visualization dashboard.
-<img src="https://raw.githubusercontent.com/eddie-a-salinas/eddie-w209-viz-share/master/static/images/capitol_rainbow_pseats.png" align="left" height="200" width="300" >
+<img src="https://raw.githubusercontent.com/eddie-a-salinas/eddie-w209-viz-share/master/static/images/capitol_rainbow_pseats.png" align="left" height="200" width="300" ><br>
 
 ## To replicate and "stand-up" a version of the site, follow these steps.  
 
