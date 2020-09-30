@@ -6,7 +6,7 @@ w209-su-cybersec
 1.  Clone this repo
 
 ```
-https://github.com/eddie-a-salinas/eddie-w209-viz-share.git
+git clone https://github.com/eddie-a-salinas/eddie-w209-viz-share.git
 ```
 
 2.  Download the data
@@ -91,8 +91,31 @@ Successfully built 492fbca17d5e
 Successfully tagged myw209flaskimg:latest
 ```
 
+4.  From the *root* directory of the project run the image in a container being sure to open ports appropriately
+(-p 5000:5000) and mount the file system appropriately so that the root of the repo is in /work.
 
+```
+esalina@2018comp:/mnt/five_tera/eddie-w209-viz-share$ pwd
+/mnt/five_tera/eddie-w209-viz-share
+esalina@2018comp:/mnt/five_tera/eddie-w209-viz-share$ docker run --rm -p 5000:5000 -it -v ${PWD}:/work:ro myw209flaskimg:latest
++ cd /work
++ env FLASK_APP=w209_final_project_flask.py FLASK_ENV=development flask run --host 0.0.0.0
+ * Serving Flask app "w209_final_project_flask.py" (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 885-723-612
+172.17.0.1 - - [30/Sep/2020 17:44:58] "GET / HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:58] "GET /rc_detail/35/1/House HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:58] "GET /rc_detail/35/1/Senate HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:58] "GET /getMemberVote/35/1/senate HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:58] "GET /getVotesPerCongress/senate HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:59] "GET /getVotesPerCongress/house HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:59] "GET /getTotalRollcallsPerCongress/senate HTTP/1.1" 200 -
+172.17.0.1 - - [30/Sep/2020 17:44:59] "GET /getTotalRollcallsPerCongress/house HTTP/1.1" 200 -
 
-
+```
 
 
