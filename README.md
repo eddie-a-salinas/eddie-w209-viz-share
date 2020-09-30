@@ -121,4 +121,7 @@ esalina@2018comp:/mnt/five_tera/eddie-w209-viz-share$ docker run --rm -p 5000:50
 172.17.0.1 - - [30/Sep/2020 17:44:59] "GET /getTotalRollcallsPerCongress/house HTTP/1.1" 200 -
 ```
 
+5.  Use the browser.  If locally use:
+
+http://localhost:5000/
 
