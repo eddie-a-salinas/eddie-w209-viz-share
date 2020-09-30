@@ -1,7 +1,7 @@
 # Congressional Data Visualization
 
 A congressional data visualization dashboard.
-![capitol](static/images/capitol_rainbow_pseats.png|250x250)
+![capitol](static/images/capitol_rainbow_pseats.png|width=100)
 
 ## To replicate and "stand-up" a version of the site, follow these steps.  
 
