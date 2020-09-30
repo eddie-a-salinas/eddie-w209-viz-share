@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"   crossorigin="anonymous"  ></script>
     <meta charset="UTF-8" />
     <title>Congress Voting Visualization</title>
     <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/main_test.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"   crossorigin="anonymous"   >
   </head>
   <body >
 	<!--<div style="z-index: 99; position: fixed; left: 10px; top: 10px; ">DIV</div>-->
@@ -202,12 +202,12 @@ Use the search field to the right.  Click the rollcall to load the row into the 
 	<tbody></tbody>
 </table>
 	<svg width=10 height=400></svg>
-    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3.v4.js"  crossorigin="anonymous"  ></script>
     <script src="{{ url_for('static', filename='js/main_test.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/seat_utils.js')  }}"></script>
     <script src="{{ url_for('static', filename='js/scatter_plot.js')  }}" ></script>
     <script src="{{ url_for('static', filename='js/utils_test.js') }}" ></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"  crossorigin="anonymous"  ></script>
     <script>
 
 var setupCongressBiCameralRCSelections=function()
