@@ -110,7 +110,7 @@ def returnDataFile(data_file):
 @app.route('/images/<path:ipath>')
 def ipathRet(ipath):
 	#print("ipath is "+str(ipath))
-	fpath='static/images/'+ipath
+	fpath=APP_FOLDER+'/static/images/'+ipath
 	if(os.path.exists(fpath)):
 		return send_file(fpath)
 	else:
