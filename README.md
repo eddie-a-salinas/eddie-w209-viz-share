@@ -4,6 +4,7 @@ A congressional data visualization dashboard.
 <br>
 <div>
 <img src="https://raw.githubusercontent.com/eddie-a-salinas/eddie-w209-viz-share/master/static/images/capitol_rainbow_pseats.png" align="left" height="200" width="300" ><br></div>
+<hr>
 
 ## To replicate and "stand-up" a version of the site, follow these steps.  
 
