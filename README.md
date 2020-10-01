@@ -7,7 +7,7 @@ You can also find a short instruction of how each visualization works at this <a
 <img src="https://raw.githubusercontent.com/eddie-a-salinas/eddie-w209-viz-share/master/static/images/capitol_rainbow_pseats.png" align="center" height="200" width="300" ><br></div>
 <hr>
 
-## To replicate and "stand-up" a version of the site, follow these steps.  
+## To replicate and "stand up" a version of the site, follow these steps.  
 
 1.  Clone this repo
 
